@@ -38,4 +38,8 @@ public class Tile {
 			this.code = i;
 		}
 	}
+	
+	 public String toString() {
+	        return String.format("\u001B[0;%sm %s \u001B[m", this.color.code + 30, this.shape.code);
+	    }
 }
