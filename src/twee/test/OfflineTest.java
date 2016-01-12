@@ -1,4 +1,4 @@
-package twee.test;
+/*package twee.test;
 
 import twee.*;
 import twee.player.*;
@@ -198,3 +198,4 @@ public class OfflineTest {
 		game.takeTurn(1);
 	}
 }
+*/
