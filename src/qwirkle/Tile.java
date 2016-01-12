@@ -37,4 +37,13 @@ public class Tile {
 			this.code = i;
 		}
 	}
+	
+	@Override
+	public String toString(){
+		String toReturn = "";
+		toReturn = toReturn + String.valueOf(this.getShape().symbol);
+		return toReturn;
+	}
 }
+	
+	
