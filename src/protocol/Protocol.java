@@ -92,6 +92,21 @@ public interface Protocol {
 	 */
 	String SERVER_CORE_JOIN_DENIED = "joinDenied";
 	
+	/* Het verzoek om te weten welke spelers er in de game zitten.
+	 * Richting: Client -> Server 
+	 */
+	String CLIENT_CORE_PLAYERS = "getPlayers";
+	
+	/* Om de client te laten weten wie er in de game zitten. 
+	 * Richting: Server -> Client
+	 * 
+	 * @param name = naam van een spelers die in de game zit
+	 * Dit kunnen meerdere namen zijn, met spaties tussen elke naam
+	 * 
+	 * @require name bevat geen spaties.
+	 */
+	String SERVER_CORE_PLAYERS = "sendPlayers";
+	
 	/* Het verzoek van de client naar de server om te beginnen.
 	 * Richting: Client -> Server 
 	 */
