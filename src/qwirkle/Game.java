@@ -73,4 +73,8 @@ public class Game {
 		board.printBoard();
 		nextPlayer();
 	}
+	
+	public Bag getBag(){
+		return this.bag;
+	}
 }

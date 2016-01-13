@@ -7,36 +7,40 @@ import java.util.Random;
 public class Bag {
 	public int i;
 	
+	public Bag(){
+		tileBag = new HashMap<Tile, Integer>();{
+			for(i = 0; i < 6; i++){
+				Tile tile = new Tile(Tile.Shape.values()[1], Tile.Color.values()[i]);
+				tileBag.put(tile, 3);
+			}
+			for(i = 0; i < 6; i++){
+				Tile tile = new Tile(Tile.Shape.values()[2], Tile.Color.values()[i]);
+				tileBag.put(tile, 3);
+			}
+			for(i = 0; i < 6; i++){
+				Tile tile = new Tile(Tile.Shape.values()[3], Tile.Color.values()[i]);
+				tileBag.put(tile, 3);
+			}
+			for(i = 0; i < 6; i++){
+				Tile tile = new Tile(Tile.Shape.values()[4], Tile.Color.values()[i]);
+				tileBag.put(tile, 3);
+			}
+			for(i = 0; i < 6; i++){
+				Tile tile = new Tile(Tile.Shape.values()[5], Tile.Color.values()[i]);
+				tileBag.put(tile, 3);
+			}
+			for(i = 0; i < 6; i++){
+				Tile tile = new Tile(Tile.Shape.values()[6], Tile.Color.values()[i]);
+				tileBag.put(tile, 3);
+			}
+		}
+	}
+	
 	public Bag(Map<Tile, Integer> tileBag){
 		this.tileBag = tileBag;
 	}
-	// Creates a new tile bag with 36 combinations, of each tile 3 will be placed in the bag.
-	public Map<Tile, Integer> tileBag = new HashMap<Tile, Integer>();{
-		for(i = 0; i < 6; i++){
-			Tile tile = new Tile(Tile.Shape.values()[1], Tile.Color.values()[i]);
-			tileBag.put(tile, 3);
-		}
-		for(i = 0; i < 6; i++){
-			Tile tile = new Tile(Tile.Shape.values()[2], Tile.Color.values()[i]);
-			tileBag.put(tile, 3);
-		}
-		for(i = 0; i < 6; i++){
-			Tile tile = new Tile(Tile.Shape.values()[3], Tile.Color.values()[i]);
-			tileBag.put(tile, 3);
-		}
-		for(i = 0; i < 6; i++){
-			Tile tile = new Tile(Tile.Shape.values()[4], Tile.Color.values()[i]);
-			tileBag.put(tile, 3);
-		}
-		for(i = 0; i < 6; i++){
-			Tile tile = new Tile(Tile.Shape.values()[5], Tile.Color.values()[i]);
-			tileBag.put(tile, 3);
-		}
-		for(i = 0; i < 6; i++){
-			Tile tile = new Tile(Tile.Shape.values()[6], Tile.Color.values()[i]);
-			tileBag.put(tile, 3);
-		}
-	}
+	
+	public Map<Tile, Integer> tileBag;
 
 	public Tile drawTile(){
 		Random s = new Random();
