@@ -3,7 +3,11 @@ package protocol;
  * Protocol groep 2 (BIT) 2016 
  * Interface Protocol met daarin de gemaakte protocol afspraken
  * @author  Wouter Bolhuis & Cas Putman
- * @version 1.2.0 (11-01-2016)
+ * @version 1.2.1 (13-01-2016)
+ * 
+ * @changelog
+ * - Commands waarmee kan worden opgevraagd hoeveel spelers er in de game zitten.
+ * - SERVER_CORE_DONE wordt niet meer gebruikt na het doorgeven van de moves naar andere spelers, ipv daarvan wordt meteen SERVER_CORE_TURN gestuurd.
  * 
  * Vragen of opmerkingen? 
  * Stuur ons een email: 
@@ -128,6 +132,7 @@ public interface Protocol {
 	String SERVER_CORE_START_DENIED = "startDenied";
 	
 	/* De manier waarop de server duidelijk maakt wie er aan de beurt is.
+	 * Dit wordt onder andere gestuurd nadat alle moves door de server zijn doorgegeven.
 	 * Richting: Server -> Client (ALL)
 	 * 
 	 * @param name = naam van de client die aan de beurt is
@@ -190,7 +195,6 @@ public interface Protocol {
 	
 	/* Voor de server om aan te geven dat ze klaar is met een reeks commando's sturen
 	 * Dit wordt gebruikt na:
-	 * - de server klaar is met alle moves door te geven
 	 * - de server klaar is met een client tiles sturen 
 	 * Richting: Server -> Client
 	 */
