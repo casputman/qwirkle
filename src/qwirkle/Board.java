@@ -9,7 +9,12 @@ public class Board {
 	
 	private static final String EMPTY = "   ";
 	
-	private Map<String, Tile> tiles = new HashMap<>();
+	private Map<String, Tile> tiles;
+	
+	public Board(){
+		tiles = new HashMap<>();
+		reset();
+	}
 	
 	public boolean makeMove(String coords, Tile tile){
 		boolean moveMade;
@@ -20,6 +25,10 @@ public class Board {
 			moveMade = false;
 		}
 		return moveMade;
+	}
+	
+	public void reset(){
+		tiles.clear();
 	}
 	
 	public int[] getLimits(Map<String, Tile> input){
@@ -33,6 +42,10 @@ public class Board {
 			limits[3] = Math.max(limits[3], Integer.parseInt(coord[0]));
 		}
 		return limits;
+	}
+	
+	public void printBoard(){
+		System.out.println(toString());
 	}
 	
 	public String toString(){
