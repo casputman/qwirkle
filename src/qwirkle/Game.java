@@ -1,5 +1,7 @@
 package qwirkle;
 
+import java.util.ArrayList;
+
 import twee.player.Player;
 
 public class Game {
@@ -76,5 +78,16 @@ public class Game {
 	
 	public Bag getBag(){
 		return this.bag;
+	}
+	
+	public void giveTile(Player player){
+		ArrayList<Tile> tempHand = player.getHand();
+		for (int i = 0; i < tempHand.size(); i++){
+			player.addTile(bag.drawTile());
+		}
+	}
+	
+	public void takeTile(Player player, int index){
+		player.takeTile(index);
 	}
 }
