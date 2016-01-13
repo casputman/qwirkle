@@ -2,8 +2,6 @@ package qwirkle;
 
 import java.util.ArrayList;
 
-import twee.player.Player;
-
 public class Game {
 	private Board board;
 	
