@@ -5,12 +5,13 @@ import java.util.Map;
 import java.util.Random;
 
 public class Bag {
-	public Map<Tile, Integer> tileBag1;
 	public int i;
-
+	
+	public Bag(Map<Tile, Integer> tileBag){
+		this.tileBag = tileBag;
+	}
 	// Creates a new tile bag with 36 combinations, of each tile 3 will be placed in the bag.
 	public Map<Tile, Integer> tileBag = new HashMap<Tile, Integer>();{
-		this.tileBag = tileBag1;
 		for(i = 0; i < 6; i++){
 			Tile tile = new Tile(Tile.Shape.values()[1], Tile.Color.values()[i]);
 			tileBag.put(tile, 3);
@@ -48,14 +49,9 @@ public class Bag {
 		shape = Tile.Shape.values()[randomS];
 		color = Tile.Color.values()[randomC];
 		Tile tile = new Tile(shape, color);
-		int amount = tileBag1.get(tile);
-		tileBag1.put(tile, amount -1);
+		int amount = tileBag.get(tile);
+		tileBag.put(tile, amount -1);
 		return tile;
-	}
-
-	public int getAmount(int i){
-		this.i = i;		
-		return tileBag1.get(i);
 	}
 
 	public Tile getTile(int s, int c){
