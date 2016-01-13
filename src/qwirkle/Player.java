@@ -7,22 +7,27 @@ public class Player {
 	public String name;
 	public int score;
 
-	public Player(String name, ArrayList<Tile> hand, int score){
+	public Player(String name){
 		this.name = name;
-		this.hand = hand;
-		this.score = score;
+		score = 0;
 	}
 
 	//Sets score to old score + new score
-	public int setScore(int score, int scoreAdd){
+	public void setScore(int score, int scoreAdd){
 		this.score = score;
 		score = score + scoreAdd;
 	}
+	
 	//Creates a new Arraylist called hand, 
 	//which automatically gets filled when the hand doesn't contain 6 tiles.
-	private ArrayList<Tile> hand = new ArrayList<Tile>();{
-		while (hand.size() < 6){
-			hand.add(game.getBag.drawTile());
-		}
+	private ArrayList<Tile> hand = new ArrayList<Tile>();
+	
+	//Takes a tile from the hand
+	public void takeTile(int tile){
+		hand.get(tile);
+	}
+	//Adds a tile to his hand
+	public void addTile(Tile tile){
+		hand.add(tile);
 	}
 }
