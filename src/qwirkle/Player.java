@@ -22,7 +22,7 @@ public class Player {
 	//which automatically gets filled when the hand doesn't contain 6 tiles.
 	private ArrayList<Tile> hand = new ArrayList<Tile>();{
 		while (hand.size() < 6){
-			hand.add(game.bag.drawTile());
+			hand.add(game.getBag.drawTile());
 		}
 	}
 }
