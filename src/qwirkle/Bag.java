@@ -1,8 +1,10 @@
 package qwirkle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class Bag {
 	public int i;
@@ -65,6 +67,17 @@ public class Bag {
 		color = Tile.Color.values()[c];
 		Tile tile = new Tile(shape, color);
 		return tile;
+	}
+	
+	public ArrayList<Tile> getTiles(){
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		Set<Tile> bagTiles = tileBag.keySet();
+		for(Tile tile: bagTiles){
+			for(int i = 0; i < tileBag.get(tile); i++){
+				tiles.add(tile);
+			}
+		}
+		return tiles;
 	}
 
 }

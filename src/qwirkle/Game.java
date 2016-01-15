@@ -9,6 +9,7 @@ public class Game {
 	private int player;
 	private Player[] players = new Player[4];
 	public Player current;
+	private Rules rules;
 	
 	
 	private boolean running;
@@ -22,6 +23,7 @@ public class Game {
 		players[3] = four;
 		bag = new Bag();
 		player = 0;
+		rules = new Rules(this);
 	}
 	
 	public void run(){
@@ -39,8 +41,8 @@ public class Game {
 	}
 	
 	public boolean takeTurn(int x, int y, Tile tile){
-		String coords = x + "," + y;
-		return getBoard().makeMove(coords,tile);
+		String coords =	Board.makeString(x, y);
+		return getBoard().makeMove(coords,tile, this);
 	}
 	
 	public Board getBoard(){
@@ -87,5 +89,9 @@ public class Game {
 	
 	public void takeTile(Player player, int index){
 		player.takeTile(index);
+	}
+	
+	public Rules getRules(){
+		return rules;
 	}
 }
