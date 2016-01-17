@@ -1,4 +1,4 @@
-package qwirkle;
+package qwirkle.core;
 
 public class Tile {
 	

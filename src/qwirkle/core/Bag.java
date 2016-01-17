@@ -1,4 +1,4 @@
-package qwirkle;
+package qwirkle.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;

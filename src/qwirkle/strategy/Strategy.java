@@ -1,11 +1,11 @@
-package strategy;
+package qwirkle.strategy;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import qwirkle.Board;
-import qwirkle.Game;
-import qwirkle.Tile;
+import qwirkle.core.Board;
+import qwirkle.core.Game;
+import qwirkle.core.Tile;
 
 public interface Strategy {
 

@@ -1,4 +1,4 @@
-package protocol;
+package qwirkle.protocol;
 /**
  * Protocol groep 2 (BIT) 2016 
  * Interface Protocol met daarin de gemaakte protocol afspraken

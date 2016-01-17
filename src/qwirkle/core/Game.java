@@ -1,6 +1,11 @@
-package qwirkle;
+package qwirkle.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import qwirkle.player.Player;
 
 public class Game {
 	private Board board;
@@ -50,6 +55,7 @@ public class Game {
 	}
 	
 	public void nextPlayer(){
+		giveTiles(current);
 		if(players[player].equals(current) || !current.equals(null)){
 			player += 1;
 			player %= 4;
@@ -65,6 +71,12 @@ public class Game {
 					current = players[i];
 				}
 			}
+		}
+	}
+	
+	public void giveTiles(Player player){
+		while(player.getHand().size() < 6){
+			giveTile(player);
 		}
 	}
 	
@@ -93,5 +105,42 @@ public class Game {
 	
 	public Rules getRules(){
 		return rules;
+	}
+	
+	public int calculateScore(Map<String, Tile> moves){
+		int score = 0;
+		Board copyBoard = this.getBoard();
+		Set<String> coords = moves.keySet();
+		for(String coord: coords){
+			copyBoard.makeMove(coord, moves.get(coord), this);
+		}
+		//Now we have a board with all the moves made
+		//We can use this board to compare with the board before the moves were made
+		Map<String, Tile> newBoard = copyBoard.getTiles();
+		Set<String> newBoardCoords = newBoard.keySet();
+		Set<String> newCoords = moves.keySet();
+		//Now we know which tiles have been put down this turn.
+		Map<String, Integer> surroundings = Board.surrounding(newBoard, newCoords);
+		for(String coord : newCoords){
+			int[]xy = Board.splitString(coord);
+			for(int i = 1; i < 6; i++){
+				//TODO deze fucking bullshit
+			}
+		}
+		return score;
+	}
+	
+	public boolean makeMoves(Map<String, Tile> moves){
+		boolean succes = true;
+		current.addScore(calculateScore(moves));
+		Set<String> coords = moves.keySet();
+		for(String coord: coords){
+			if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){
+				
+			} else {
+				succes = false;
+			}
+		}
+		return succes;
 	}
 }

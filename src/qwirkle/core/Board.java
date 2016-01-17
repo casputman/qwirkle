@@ -1,9 +1,10 @@
-package qwirkle;
+package qwirkle.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
-import qwirkle.Tile;
+import qwirkle.core.Tile;
 
 public class Board {
 	
@@ -88,6 +89,30 @@ public class Board {
 		toReturn[0] = Integer.parseInt(coord[0]);
 		toReturn[1] = Integer.parseInt(coord[1]);
 		return toReturn;
+	}
+	
+	public static Map<String, Integer> surrounding(Map<String, Tile> tiles, Set<String> coords){
+		Map<String, Integer> surroundings = new HashMap<String, Integer>();
+		Set<String> boardCoords = tiles.keySet();
+		for (String coord : coords){
+			int surround = 0;
+			int surroundX = 0;
+			int surroundY = 0;
+			int[]xy = Board.splitString(coord);
+			for(int i = -1; i < 2; i+= 2){
+				if(boardCoords.contains(Board.makeString(xy[0] + i, xy[1]))){
+					surroundX = 1;
+				}
+			}
+			for(int i = -1; i < 2; i+= 2){
+				if(boardCoords.contains(Board.makeString(xy[0], xy[1] + i))){
+					surroundY = 1;
+				}
+			}
+			surround = surroundX + surroundY;
+			surroundings.put(coord, surround);
+		}
+		return surroundings;
 	}
 		
 }
