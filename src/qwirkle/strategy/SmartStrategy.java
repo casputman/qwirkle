@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import qwirkle.core.Board;
 import qwirkle.core.Game;
@@ -82,6 +83,63 @@ public class SmartStrategy implements Strategy {
 	public static Map<String, Tile> findHighScore(Game game, ArrayList<Tile> hand){
 		Map<String, Tile> toReturn = new HashMap<String, Tile>();
 		//TODO body
+		return toReturn;
+	}
+	
+	public static Set<String> possibleQwirkle(Game game){
+		Set<String> toReturn = new TreeSet<String>();
+		Map<String, Tile> board = game.getBoard().getTiles();
+		Set<String> boardCoords = board.keySet();
+		Map<String, int[]> surroundings = Board.surrounding(board, boardCoords);
+		for(String coord : boardCoords){
+			int[]xy = Board.splitString(coord);
+			if(surroundings.get(coord)[0] != 0){
+				for(int i = 1; i < 6; i++){
+					String temp = Board.makeString(xy[0]+i, xy[1]);
+					if(!boardCoords.contains(temp) || board.get(temp).equals(null)){
+						int points = 0;
+						for(int j = 0; i > -6; i--){
+							String temp2 = Board.makeString(Board.splitString(temp)[0] + j, Board.splitString(temp)[1]);
+							if(points < 5){
+								if(boardCoords.contains(temp2) && !board.get(temp2).equals(null)){
+									points += 1;
+									int[] takeX = surroundings.get(temp2);
+									takeX[0] = 0;
+									surroundings.put(temp2, takeX);
+								}
+							} else {
+								if(!boardCoords.contains(temp2) && board.get(temp2).equals(null)){
+									toReturn.add(temp2);
+								}
+							}
+						}
+					}
+				}
+			}
+			if(surroundings.get(coord)[1] != 0){
+				for(int i = 1; i < 6; i++){
+					String temp = Board.makeString(xy[0], xy[1]+i);
+					if(!boardCoords.contains(temp) || board.get(temp).equals(null)){
+						int points = 0;
+						for(int j = 0; i > -6; i--){
+							String temp2 = Board.makeString(Board.splitString(temp)[0], Board.splitString(temp)[1]+j);
+							if(points < 5){
+								if(boardCoords.contains(temp2) && !board.get(temp2).equals(null)){
+									points += 1;
+									int[] takeX = surroundings.get(temp2);
+									takeX[0] = 0;
+									surroundings.put(temp2, takeX);
+								}
+							} else {
+								if(!boardCoords.contains(temp2) && board.get(temp2).equals(null)){
+									toReturn.add(temp2);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		return toReturn;
 	}
 	

@@ -123,8 +123,8 @@ public class Game {
 		Map<String, int[]> surroundings = Board.surrounding(newBoard, newCoords);
 		for(String coord : newCoords){
 			int[]xy = Board.splitString(coord);
-			for(int i = 1; i < 6; i++){
-				if(surroundings.get(coord)[0] != 0){
+			if(surroundings.get(coord)[0] != 0){
+				for(int i = 1; i < 6; i++){
 					String temp = Board.makeString(xy[0]+i, xy[1]);
 					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
 						int points = 0;
@@ -143,7 +143,8 @@ public class Game {
 						score += points;
 					}
 				}
-				if(surroundings.get(coord)[1] != 0){
+			if(surroundings.get(coord)[1] != 0){
+				for(int i = 1; i < 6; i++){
 					String temp = Board.makeString(xy[0], xy[1]+i);
 					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
 						int points = 0;
@@ -156,10 +157,11 @@ public class Game {
 								surroundings.put(temp2, takeX);
 							}
 						}
-						if(points == 6){
-							points += 6;
+							if(points == 6){
+								points += 6;
+							}
+							score += points;
 						}
-						score += points;
 					}
 				}
 			}
