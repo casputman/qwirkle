@@ -3,7 +3,7 @@ package protocol;
  * Protocol groep 2 (BIT) 2016 
  * Interface Protocol met daarin de gemaakte protocol afspraken
  * @author  Wouter Bolhuis & Cas Putman
- * @version 1.2.1 (13-01-2016)
+ * @version 1.3.0 (18-01-2016)
  * 
  * @changelog
  * - Commands waarmee kan worden opgevraagd hoeveel spelers er in de game zitten.
@@ -270,6 +270,21 @@ public interface Protocol {
 	 */
 	String SERVER_CORE_TIMEOUT_EXCEPTION = "exception timeout";
 	
+	/* Als één van de spelers om één of andere reden het spel wilt verlaten dan kan de client dit melden.
+	 * Richting: Client -> Server
+	 */
+	String SERVER_CORE_EXIT = "exit";
+	
+	/* De server zal reageren met een disconnect commando, gevolgd door de naam:
+	 *
+	 * Richting: Server -> Client (ALL)
+	 * 
+	 * @param name = naam van de client die verbinding verbrak.
+	 * 
+	 * @require name bevat geen spaties
+	 */
+	
+	String SERVER_CORE_DISCONNECT = "disconnect";
 	
 	/* ---------------------------EXTENSION COMMANDS ---------------------------	 */
 	
