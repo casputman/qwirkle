@@ -96,12 +96,13 @@ public interface Protocol {
 	 */
 	String SERVER_CORE_JOIN_DENIED = "joinDenied";
 	
-	/* Het verzoek om te weten welke spelers er in de game zitten.
+	/* Het verzoek om te weten welke spelers er gejoined zijn, maar nog niet in een spel zitten
 	 * Richting: Client -> Server 
 	 */
 	String CLIENT_CORE_PLAYERS = "getPlayers";
 	
-	/* Om de client te laten weten wie er in de game zitten. 
+	/* Om de client te laten weten welke spelers er gejoined zijn, maar nog niet in een spel zitten
+	 * Dit wordt onder andere gestuurd wanneer men zelf een server joined en wanneer iemand anders dezelfde server joined.  
 	 * Richting: Server -> Client
 	 * 
 	 * @param name = naam van een spelers die in de game zit
@@ -157,7 +158,7 @@ public interface Protocol {
 	 */
 	String CLIENT_CORE_MOVE = "move";
 	
-	/* Na het move bericht is dit één van de mogelijke responses
+	/* Na het move bericht is dit Ã©Ã©n van de mogelijke responses
 	 * Richting: Server -> Client
 	 */
 	String SERVER_CORE_MOVE_ACCEPTED = "moveAccepted";
@@ -261,7 +262,7 @@ public interface Protocol {
 	 */
 	String SERVER_CORE_GAME_ENDED = "gameEnded";
 	
-	/* Als één van de spelers om één of andere reden verbinding verliest dan kan de server dat aan de clients doorgeven.
+	/* Als Ã©Ã©n van de spelers om Ã©Ã©n of andere reden verbinding verliest dan kan de server dat aan de clients doorgeven.
 	 * Richting: Server -> Client (ALL)
 	 * 
 	 * @param name = naam van de client die verbinding verloor
@@ -270,7 +271,7 @@ public interface Protocol {
 	 */
 	String SERVER_CORE_TIMEOUT_EXCEPTION = "exception timeout";
 	
-	/* Als één van de spelers om één of andere reden het spel wilt verlaten dan kan de client dit melden.
+	/* Als Ã©Ã©n van de spelers om Ã©Ã©n of andere reden het spel wilt verlaten dan kan de client dit melden.
 	 * Richting: Client -> Server
 	 */
 	String SERVER_CORE_EXIT = "exit";
@@ -309,7 +310,7 @@ public interface Protocol {
 	 */
 	String SERVER_LEADERBOARD_SEND_ALL = "leaderboard sendLeaderboard";
 	
-	/* De client kan ook de score van één speler opvragen.
+	/* De client kan ook de score van Ã©Ã©n speler opvragen.
 	 * Richting: Client -> Server
 	 * 
 	 * @param name = naam van de speler wiens score men wilt zien
@@ -318,7 +319,7 @@ public interface Protocol {
 	 */
 	String CLIENT_LEADERBOARD_GET_PERSON_TOTAL = "leaderboard score";
 	
-	/* Het terugsturen van de score van één speler
+	/* Het terugsturen van de score van Ã©Ã©n speler
 	 * Richting: Server -> Client
 	 * 
 	 * @param name = naam van de speler
@@ -333,7 +334,7 @@ public interface Protocol {
 	 */
 	String SERVER_LEADERBOARD_SEND_PERSON_TOTAL = "leaderboard sendScore";
 	
-	/* Het opvragen van alle games van één speler.
+	/* Het opvragen van alle games van Ã©Ã©n speler.
 	 * Richting: Client -> Server
 	 * 
 	 * @param name = naam van de speler
@@ -342,7 +343,7 @@ public interface Protocol {
 	 */
 	String CLIENT_LEADERBOARD_GET_PERSON_HISTORY = "leaderboard games";
 	
-	/* Het terugsturen van alle resultaten van één speler.
+	/* Het terugsturen van alle resultaten van Ã©Ã©n speler.
 	 * Richting: Server -> Client
 	 * 
 	 * @param gameName = hoe de game bekend staat bij de server
@@ -365,7 +366,7 @@ public interface Protocol {
 	 */
 	String CLIENT_CHAT_MESSAGE_SEND = "chat sendMessage";
 	
-	/* Het versturen van een bericht aan één speler
+	/* Het versturen van een bericht aan Ã©Ã©n speler
 	 * Richting: Client -> Server
 	 * 
 	 * @param name = naam van de ontvanger
@@ -377,7 +378,7 @@ public interface Protocol {
 	
 	/* Het doorsturen van een bericht naar een client
 	 * Dit wordt gebruikt bij een gewoon bericht, dan wordt dit commando aan alle spelers gericht
-	 * Dit wordt gebruikt bij een whisper, dan wordt dit commando aan één speler gericht
+	 * Dit wordt gebruikt bij een whisper, dan wordt dit commando aan Ã©Ã©n speler gericht
 	 * Richting: Server -> Client
 	 * 
 	 * @param name = naam van de speler die het bericht verstuurde
@@ -447,8 +448,8 @@ public interface Protocol {
 	String CLIENT_CHALLENGE_DENY = "challenge denied";
 	
 	/* Als de challenge niet succesvol is
-	 * Bijvoorbeeld als één van de namen niet op de server online is
-	 * Bijvoorbeeld als één van de speler de uitdaging heeft afgeslagen
+	 * Bijvoorbeeld als Ã©Ã©n van de namen niet op de server online is
+	 * Bijvoorbeeld als Ã©Ã©n van de speler de uitdaging heeft afgeslagen
 	 * Als alle spelers de challenge accepteren wordt gewoon het starting command van de core gegeven.
 	 * Richting: Server -> Client
 	 * 
