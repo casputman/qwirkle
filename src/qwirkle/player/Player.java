@@ -1,12 +1,20 @@
-package qwirkle;
+package qwirkle.player;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class Player {
+import qwirkle.core.Game;
+import qwirkle.core.Tile;
+
+public abstract class Player {
 
 	public String name;
 	public int score;
 
+	public Player(){
+		score = 0;
+	}
+	
 	public Player(String name){
 		this.name = name;
 		score = 0;
@@ -16,6 +24,10 @@ public class Player {
 	public void setScore(int score, int scoreAdd){
 		this.score = score;
 		score = score + scoreAdd;
+	}
+	
+	public void addScore(int scoreAdd){
+		setScore(score, scoreAdd);
 	}
 	
 	//Creates a new Arraylist called hand, 
@@ -34,4 +46,6 @@ public class Player {
 	public ArrayList<Tile> getHand(){
 		return hand;
 	}
+	
+	public abstract Map<String, Tile> determineMove(Game game);
 }
