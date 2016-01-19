@@ -106,7 +106,7 @@ public class Server {
     //@ requires !threads.isEmpty() || !joined.isEmpty() || !playing.isEmpty();
     public synchronized void analyzeString(ClientHandler handler, String msg) {
         System.err.println("\nINPUT FROM " + handler.getClientName() + ": " + msg);
-        String[] input = msg.split(ProtocolConstants.msgSeperator);
+        String[] input = msg.split(Protocol.MESSAGESEPERATOR);
         if (input[0].equals(ProtocolControl.joinRequest)) {
             threads.remove(handler);
             if (joined.size() == 0) {
@@ -126,7 +126,7 @@ public class Server {
                             + " is waiting for a game.");
                 } else {
                     sendMessage(handler, ProtocolConstants.invalidCommand
-                            + ProtocolConstants.msgSeperator + ProtocolConstants.usernameInUse);
+                            + Protocol.MESSAGESEPERATOR + ProtocolConstants.usernameInUse);
                     removeHandler(handler);
                 }
             }
@@ -147,9 +147,9 @@ public class Server {
                 gameMap.put(game, clients);
                 for (ClientHandler handle : joined) {
                     handle.setGame(game);
-                    sendMessage(handle, ProtocolControl.startGame 
-                            + ProtocolConstants.msgSeperator + firstPlayer.getClientName() 
-                            + ProtocolConstants.msgSeperator
+                    sendMessage(handle, Protocol.SERVER_CORE_START 
+                            + Protocol.MESSAGESEPERATOR + firstPlayer.getClientName() 
+                            + Protocol.MESSAGESEPERATOR
                             + otherHandler(firstPlayer).getClientName());
                     playing.add(handle);
                 }
@@ -157,37 +157,9 @@ public class Server {
                 game.run();
 
             }
-
-        } else if (input[0].equals(ProtocolControl.getBoard)) {
-            sendBoard(handler);
-        } else if (input[0].equals(ProtocolControl.doMove)) {
+        } else if (input[0].equals(Protocol.CLIENT_CORE_MOVE)) {
             doMove(handler, input[1]);
-        } else if (input[0].equals(ProtocolControl.playerTurn)) {
-            turn(handler);
-        } else if (input[0].equals(ProtocolControl.rematch)) {
-            if (!handler.getGame().getRunning()) {
-                if (otherHandler(handler).rematch) {
-                    otherHandler(handler).rematch = false;
-                    Game game = new Game(handler.getPlayer(),
-                            otherHandler(handler).getPlayer());
-                    ClientHandler[] clients = new ClientHandler[2];
-                    clients[0] = handler;
-                    clients[1] = otherHandler(handler);
-                    gameMap.put(game, clients);
-                    for (ClientHandler handle : clients) {
-                        handle.setGame(game);
-                        sendMessage(handle, ProtocolControl.rematchConfirm);
-                        sendMessage(handle, ProtocolControl.startGame 
-                                + ProtocolConstants.msgSeperator + clients[0].getClientName() 
-                                + ProtocolConstants.msgSeperator
-                                + otherHandler(clients[0]).getClientName());
-                    }
-                    game.run();
-                } else {
-                    handler.rematch = true;
-                }
             }
-        }
     }
 
     /**
@@ -228,25 +200,10 @@ public class Server {
         }
         System.out.println("\n   DISCONNECTING: " + handler.getClientName()
                 + " has left the game\n");
-        sendMessage(otherHandler(handler), ProtocolControl.endGame 
-                + ProtocolConstants.msgSeperator
-                + handler.getClientName() + ProtocolConstants.msgSeperator
-                + ProtocolConstants.connectionlost);
-    }
-
-    /**
-     * Creates and sends the string containing the board using ProtocolControl.sendBoard
-     * @param handler
-     */
-    //requires handler != null;
-    public synchronized void sendBoard(ClientHandler handler) {
-        Mark[] marks = handler.getGame().getBoard().getFields();
-        String board = "";
-        for (int i = 0; i < marks.length; i++) {
-            board += marks[i].name().toLowerCase() + ProtocolConstants.msgSeperator;
-        }
-        sendMessage(handler, ProtocolControl.sendBoard 
-                + ProtocolConstants.msgSeperator + board);
+        sendMessage(otherHandler(handler), Protocol.SERVER_CORE_GAME_ENDED
+                + Protocol.MESSAGESEPERATOR
+                + handler.getClientName() + Protocol.MESSAGESEPERATOR
+                + Protocol.SERVER_CORE_DISCONNECT);
     }
 
     /**
@@ -270,7 +227,6 @@ public class Server {
          int yCoordinate = Integer.parseInt(coordinatesArray[1]);
          int shape = Integer.parseInt(coordinatesArray[2]);
          int color = Integer.parseInt(coordinatesArray[3]);
-         String parsedCoordinates  = Board.makeString(xCoordinate, yCoordinate);
          Tile tile = handler.getGame().getBoard().makeTile(shape, color);
         boolean moveAllowed = false;
         if (handler.getGame().current.equals(handler.getPlayer())) {
@@ -285,23 +241,23 @@ public class Server {
                 }
                 for (ClientHandler handle : doMove) {
                     sendMessage(handle, ProtocolControl.moveResult 
-                            + ProtocolConstants.msgSeperator
-                            + ProtocolConstants.msgSeperator 
+                            + Protocol.MESSAGESEPERATOR
+                            + Protocol.MESSAGESEPERATOR 
                             + handler.getClientName()
-                            + ProtocolConstants.msgSeperator + true
-                            + ProtocolConstants.msgSeperator 
+                            + Protocol.MESSAGESEPERATOR + true
+                            + Protocol.MESSAGESEPERATOR 
                             + handler.getGame().current.getName());
                 }
             } else {
                 sendMessage(handler, ProtocolConstants.invalidCommand
-                        + ProtocolConstants.msgSeperator + ProtocolConstants.invalidMove
-                        + ProtocolConstants.msgSeperator + handler.getClientName());
+                        + Protocol.MESSAGESEPERATOR + ProtocolConstants.invalidMove
+                        + Protocol.MESSAGESEPERATOR + handler.getClientName());
 
             }
         } else {
             sendMessage(handler,
-                    ProtocolConstants.invalidCommand + ProtocolConstants.msgSeperator
-                            + ProtocolConstants.invalidUserTurn + ProtocolConstants.msgSeperator
+                    ProtocolConstants.invalidCommand + Protocol.MESSAGESEPERATOR
+                            + ProtocolConstants.invalidUserTurn + Protocol.MESSAGESEPERATOR
                             + handler.getClientName());
         }
     }
@@ -318,18 +274,18 @@ public class Server {
             if (game.getRules().hasWinner()) {
                 for (ClientHandler client : clients) {
                     if (game.getRules().isWinner(client.getPlayer())) {
-                        sendMessage(client, ProtocolControl.endGame
-                                + ProtocolConstants.msgSeperator + client.getClientName()
-                                + ProtocolConstants.msgSeperator + ProtocolConstants.winner);
+                        sendMessage(client, Protocol.SERVER_CORE_GAME_ENDED
+                                + Protocol.MESSAGESEPERATOR + client.getClientName()
+                                + Protocol.MESSAGESEPERATOR + ProtocolConstants.winner);
                         sendMessage(otherHandler(client), ProtocolControl.endGame
-                                + ProtocolConstants.msgSeperator + client.getClientName()
-                                + ProtocolConstants.msgSeperator + ProtocolConstants.winner);
+                                + Protocol.MESSAGESEPERATOR + client.getClientName()
+                                + Protocol.MESSAGESEPERATOR + ProtocolConstants.winner);
                     }
                 }
             } else {
                 for (ClientHandler client : clients) {
-                    sendMessage(client, ProtocolControl.endGame + ProtocolConstants.msgSeperator
-                            + client.getClientName() + ProtocolConstants.msgSeperator
+                    sendMessage(client, Protocol.SERVER_CORE_GAME_ENDED + Protocol.MESSAGESEPERATOR
+                            + client.getClientName() + Protocol.MESSAGESEPERATOR
                             + ProtocolConstants.draw);
                 }
             }
@@ -343,7 +299,7 @@ public class Server {
     //@pure
     public synchronized void turn(ClientHandler handler) {
         sendMessage(handler,
-                ProtocolControl.turn + ProtocolConstants.msgSeperator + handler.getGame()
+                ProtocolControl.turn + Protocol.MESSAGESEPERATOR + handler.getGame()
                 .current.getName());
     }
 

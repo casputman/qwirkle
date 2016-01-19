@@ -3,6 +3,8 @@ package qwirkle.core;
 import java.util.ArrayList;
 import java.util.Map;
 
+import qwirkle.player.Player;
+
 public class Rules {
 
 	private Board board;
@@ -13,6 +15,14 @@ public class Rules {
 		this.board = game.getBoard();
 		this.game = game;
 		tiles = board.getTiles();
+	}
+
+	//TODO
+	public boolean hasWinner(){
+		return true;
+	}
+	public boolean isWinner(Player player){
+		return true;
 	}
 	
 	public boolean isMoveAllowed(String coords, Tile tile){
