@@ -91,11 +91,11 @@ public class Board {
 		return toReturn;
 	}
 	
-	public static Map<String, Integer> surrounding(Map<String, Tile> tiles, Set<String> coords){
-		Map<String, Integer> surroundings = new HashMap<String, Integer>();
+	public static Map<String, int[]> surrounding(Map<String, Tile> tiles, Set<String> coords){
+		Map<String, int[]> surroundings = new HashMap<String, int[]>();
 		Set<String> boardCoords = tiles.keySet();
 		for (String coord : coords){
-			int surround = 0;
+			int[] surround = new int[3];
 			int surroundX = 0;
 			int surroundY = 0;
 			int[]xy = Board.splitString(coord);
@@ -109,7 +109,9 @@ public class Board {
 					surroundY = 1;
 				}
 			}
-			surround = surroundX + surroundY;
+			surround[0] = surroundX;
+			surround[1] = surroundY;
+			surround[2] = surroundX + surroundY;
 			surroundings.put(coord, surround);
 		}
 		return surroundings;

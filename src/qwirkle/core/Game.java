@@ -120,11 +120,48 @@ public class Game {
 		Set<String> newBoardCoords = newBoard.keySet();
 		Set<String> newCoords = moves.keySet();
 		//Now we know which tiles have been put down this turn.
-		Map<String, Integer> surroundings = Board.surrounding(newBoard, newCoords);
+		Map<String, int[]> surroundings = Board.surrounding(newBoard, newCoords);
 		for(String coord : newCoords){
 			int[]xy = Board.splitString(coord);
 			for(int i = 1; i < 6; i++){
-				//TODO deze fucking bullshit
+				if(surroundings.get(coord)[0] != 0){
+					String temp = Board.makeString(xy[0]+i, xy[1]);
+					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
+						int points = 0;
+						for(int j = 0; i > -6; i--){
+							String temp2 = board.makeString(Board.splitString(temp)[0] + j, Board.splitString(temp)[1]);
+							if(newBoardCoords.contains(temp2) && !newBoard.get(temp2).equals(null)){
+								points += 1;
+								int[] takeX = surroundings.get(temp2);
+								takeX[0] = 0;
+								surroundings.put(temp2, takeX);
+							}
+						}
+						if(points == 6){
+							points += 6;
+						}
+						score += points;
+					}
+				}
+				if(surroundings.get(coord)[1] != 0){
+					String temp = Board.makeString(xy[0], xy[1]+i);
+					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
+						int points = 0;
+						for(int j = 0; i > -6; i--){
+							String temp2 = board.makeString(Board.splitString(temp)[0], Board.splitString(temp)[1]+j);
+							if(newBoardCoords.contains(temp2) && !newBoard.get(temp2).equals(null)){
+								points += 1;
+								int[] takeX = surroundings.get(temp2);
+								takeX[0] = 0;
+								surroundings.put(temp2, takeX);
+							}
+						}
+						if(points == 6){
+							points += 6;
+						}
+						score += points;
+					}
+				}
 			}
 		}
 		return score;
