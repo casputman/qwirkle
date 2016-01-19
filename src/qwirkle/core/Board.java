@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Set;
 
 import qwirkle.core.Tile;
+import qwirkle.core.Tile.Color;
+import qwirkle.core.Tile.Shape;
 
 public class Board {
 	
@@ -34,6 +36,12 @@ public class Board {
 			moveMade = false;
 		}
 		return moveMade;
+	}
+	public Tile makeTile(int x, int y){
+		Shape shape = Shape.values()[x];
+		Color color = Color.values()[y];
+		Tile tile = new Tile(shape, color);
+		return tile;
 	}
 	
 	public void reset(){

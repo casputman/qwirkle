@@ -48,4 +48,12 @@ public abstract class Player {
 	}
 	
 	public abstract Map<String, Tile> determineMove(Game game);
+
+	public String getName() {
+		return name;
+	}
+	
+	public static Player createPlayer(String name){
+		return (new HumanPlayer(name));
+	}
 }
