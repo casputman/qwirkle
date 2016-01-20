@@ -275,7 +275,12 @@ public interface Protocol {
 	/* Als één van de spelers om één of andere reden het spel wilt verlaten dan kan de client dit melden.
 	 * Richting: Client -> Server
 	 */
-	String SERVER_CORE_EXIT = "exit";
+	String CLIENT_CORE_EXIT = "exit";
+	
+	/* Wanneer er een foutief commando wordt gestuurd, of men doet een move buiten zijn beurt om.
+	 * Richting: Client -> Server
+	 */
+	String SERVER_CORE_DENIED = "commandDenied";
 	
 	/* De server zal reageren met een disconnect commando, gevolgd door de naam:
 	 *
@@ -287,6 +292,8 @@ public interface Protocol {
 	 */
 	
 	String SERVER_CORE_DISCONNECT = "disconnect";
+	
+	
 	
 	/* ---------------------------EXTENSION COMMANDS ---------------------------	 */
 	
