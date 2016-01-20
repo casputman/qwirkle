@@ -102,6 +102,7 @@ public interface Protocol {
 	String CLIENT_CORE_PLAYERS = "getPlayers";
 	
 	/* Om de client te laten weten wie er in de game zitten. 
+	 * Dit command wordt automatisch door de server naar alle clients verstuurd als iemand joined/verbinding verliest
 	 * Richting: Server -> Client
 	 * 
 	 * @param name = naam van een spelers die in de game zit
