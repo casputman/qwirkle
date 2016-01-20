@@ -48,14 +48,18 @@ public class Board {
 		tiles.clear();
 	}
 	
-	public int[] getLimits(Map<String, Tile> input){
+	public static int[] getLimits(Map<String, Tile> input){
 		int[] limits = new int[4];
 		for (String coords : input.keySet()){
 			int[] coord = splitString(coords);
 			
+			//Onderste Y
 			limits[0] = Math.min(limits[0], coord[1]);
+			//Meest linkse X
 			limits[1] = Math.min(limits[1], coord[0]);
+			//Bovenste Y
 			limits[2] = Math.max(limits[2], coord[1]);
+			//Meest rechtse X
 			limits[3] = Math.max(limits[3], coord[0]);
 		}
 		return limits;
@@ -69,7 +73,7 @@ public class Board {
 		String toReturn = "";
 		int[] limits = getLimits(this.tiles);
 		
-		for(int i = limits[0]; i <= limits[2]; i++){
+		for(int i = limits[2]; i <= limits[0]; i--){
 			for(int j = limits[1]; j <= limits[3]; j++){
 				String coords = makeString(j,i);
 				if(tiles.containsKey(coords)){
