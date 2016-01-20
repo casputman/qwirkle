@@ -8,7 +8,8 @@ package qwirkle.protocol;
  * @changelog
  * - Commands waarmee kan worden opgevraagd hoeveel spelers er in de game zitten.
  * - SERVER_CORE_DONE wordt niet meer gebruikt na het doorgeven van de moves naar andere spelers, ipv daarvan wordt meteen SERVER_CORE_TURN gestuurd.
- * 
+ * - GetPlayer & SendPlayer commands toegevoegd.
+ * - SendPlayer wordt nu automatisch verstuurt
  * Vragen of opmerkingen? 
  * Stuur ons een email: 
  * w.t.c.bolhuis@student.utwente.nl
