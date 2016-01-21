@@ -107,56 +107,58 @@ public class Server {
 	public synchronized void analyzeString(ClientHandler handler, String msg) {
 		System.err.println("\nINPUT FROM " + handler.getClientName() + ": " + msg);
 		String[] input = msg.split(Protocol.MESSAGESEPERATOR);
-		if (input[0].equals(ProtocolControl.joinRequest)) {
+		if (input[0].equals(Protocol.CLIENT_CORE_JOIN)) {
 			threads.remove(handler);
-			if (joined.size() == 0) {
-				joined.add(handler);
-				Player one = Player.createPlayer(handler.getClientName());
-				handler.setPlayer(one);
-				acceptRequest(handler);
-				System.out.println("JOINING: " + handler.getClientName()
-				+ " is waiting for a game!");
-			} else {
-				if (!joined.get(0).getClientName().equals(handler.getClientName())) {
+			for (int i = 0; i < 3; i++){
+				if (joined.size() < 4 && !joined.get(i).getClientName().equals(handler.getClientName())) {
 					joined.add(handler);
-					Player two = Player.createPlayer(handler.getClientName());
-					handler.setPlayer(two);
+					Player one = Player.createPlayer(handler.getClientName());
+					handler.setPlayer(one);
 					acceptRequest(handler);
 					System.out.println("JOINING: " + handler.getClientName()
-					+ " is waiting for a game.");
+					+ " is waiting for a game!");
 				} else {
-					sendMessage(handler, ProtocolConstants.invalidCommand
-							+ Protocol.MESSAGESEPERATOR + ProtocolConstants.usernameInUse);
-					removeHandler(handler);
+					if (!joined.get(0).getClientName().equals(handler.getClientName())) {
+						joined.add(handler);
+						Player two = Player.createPlayer(handler.getClientName());
+						handler.setPlayer(two);
+						acceptRequest(handler);
+						System.out.println("JOINING: " + handler.getClientName()
+						+ " is waiting for a game.");
+					} else {
+						sendMessage(handler, ProtocolConstants.invalidCommand
+								+ Protocol.MESSAGESEPERATOR + ProtocolConstants.usernameInUse);
+						removeHandler(handler);
+					}
 				}
-			}
-			if (joined.size() == 2){ 
-				Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), null, null);
-			} else if (joined.size() == 3){
-				Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), null);
-			} else if (joined.size() == 4){
-				Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), joined.get(3).getPlayer());
+				if (joined.size() == 2){ 
+					Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), null, null);
+				} else if (joined.size() == 3){
+					Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), null);
+				} else if (joined.size() == 4){
+					Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), joined.get(3).getPlayer());
 
-				ClientHandler[] clients = new ClientHandler[2];
-				int telInt = 0;
-				for (ClientHandler handle : joined) {
-					clients[telInt] = handle;
-					telInt++;
-				}
-				ClientHandler firstPlayer;
-				firstPlayer = joined.get(0);
-				gameMap.put(game, clients);
-				for (ClientHandler handle : joined) {
-					handle.setGame(game);
-					sendMessage(handle, Protocol.SERVER_CORE_START 
-							+ Protocol.MESSAGESEPERATOR + firstPlayer.getClientName() 
-							+ Protocol.MESSAGESEPERATOR
-							+ handler2(firstPlayer).getClientName());
-					playing.add(handle);
-				}
-				joined.clear();
-				game.run();
+					ClientHandler[] clients = new ClientHandler[2];
+					int telInt = 0;
+					for (ClientHandler handle : joined) {
+						clients[telInt] = handle;
+						telInt++;
+					}
+					ClientHandler firstPlayer;
+					firstPlayer = joined.get(0);
+					gameMap.put(game, clients);
+					for (ClientHandler handle : joined) {
+						handle.setGame(game);
+						sendMessage(handle, Protocol.SERVER_CORE_START 
+								+ Protocol.MESSAGESEPERATOR + firstPlayer.getClientName() 
+								+ Protocol.MESSAGESEPERATOR
+								+ handler2(firstPlayer).getClientName());
+						playing.add(handle);
+					}
+					joined.clear();
+					game.run();
 
+				}
 			}
 		} else if (input[0].equals(Protocol.CLIENT_CORE_MOVE)) {
 			doMove(handler, input[1]);
@@ -242,13 +244,14 @@ public class Server {
 					gameEnded(handler.getGame());
 				}
 				for (ClientHandler handle : doMove) {
+					sendMessage(handle, Protocol.SERVER_CORE_MOVE_ACCEPTED);
 					sendMessage(handle, Protocol.SERVER_CORE_MOVE_MADE 
 							+ Protocol.MESSAGESEPERATOR
-							+ Protocol.MESSAGESEPERATOR 
-							+ handler.getClientName()
-							+ Protocol.MESSAGESEPERATOR + true
-							+ Protocol.MESSAGESEPERATOR 
-							+ handler.getGame().current.getName());
+							+ xCoordinate
+							+ Protocol.MESSAGESEPERATOR
+							+ yCoordinate
+							+ Protocol.MESSAGESEPERATOR
+							+ tile);
 				}
 			} else {
 				sendMessage(handler, Protocol.CLIENT_CORE_DONE
@@ -258,9 +261,9 @@ public class Server {
 			}
 		} else {
 			sendMessage(handler,
-					ProtocolConstants.invalidCommand + Protocol.MESSAGESEPERATOR
-					+ ProtocolConstants.invalidUserTurn + Protocol.MESSAGESEPERATOR
-					+ handler.getClientName());
+					Protocol.SERVER_CORE_DENIED + Protocol.MESSAGESEPERATOR
+					+ Protocol.SERVER_CORE_TURN + Protocol.MESSAGESEPERATOR
+					+ (handler.getGame().current.getName()));
 		}
 	}
 
@@ -279,7 +282,7 @@ public class Server {
 						sendMessage(client, Protocol.SERVER_CORE_GAME_ENDED
 								+ Protocol.MESSAGESEPERATOR + client.getClientName()
 								+ Protocol.MESSAGESEPERATOR + ProtocolConstants.winner);
-						sendMessage(handler2(client), ProtocolControl.endGame
+						sendMessage(handler2(client), Protocol.SERVER_CORE_GAME_ENDED
 								+ Protocol.MESSAGESEPERATOR + client.getClientName()
 								+ Protocol.MESSAGESEPERATOR + ProtocolConstants.winner);
 					}
@@ -301,7 +304,7 @@ public class Server {
 	//@pure
 	public synchronized void turn(ClientHandler handler) {
 		sendMessage(handler,
-				ProtocolControl.turn + Protocol.MESSAGESEPERATOR + handler.getGame()
+				Protocol.SERVER_CORE_TURN + Protocol.MESSAGESEPERATOR + handler.getGame()
 				.current.getName());
 	}
 

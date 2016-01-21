@@ -439,48 +439,6 @@ public class Client extends Thread {
     }
 
     /**
-     * This method is called when readResponse reads either ProtocolControl.turn 
-     * or ProtocolControl.moveResult.
-     * It will first check if the String player given is equal to the clientName
-     * If this is not the case it will simply tell the user the other player is
-     * making a move
-     * If it is the case it will call upon the determineMoveInt method from the player
-     * these determineMoveInt methods will return a column number
-     * It will first check if the column number is valid
-     * After that it will use a form of gravity to find out what the first empty spot is
-     * that first empty spot will then be send to the server as the move  
-     * @param player
-     */
-    //@ requires player != null;
-    //@ requires savedBoard.length == 42;
-    public void makeMove(String player) {
-        int keuze = -1;
-        if (player.equals(clientName)) {
-            keuze = you.determineMoveInt(savedBoard, mark);
-                if (keuze > 0 && keuze < 8) {
-                    int column = keuze - 1;
-                    while (column < 41 && savedBoard[column].equals("EMPTY")) {
-                        if (column + 7 < 41 && savedBoard[column + 7].equals("EMPTY")) {
-                            column += 7;
-                        } else {
-                            break;
-                        }
-                    }
-                    sendMessage(ProtocolControl.doMove + ProtocolConstants.msgSeperator + column);
-                    readResponse();
-                } else {
-                    System.err.println("Please enter a number inbetween 1 & 7");
-                    makeMove(player);
-                }
-            
-        } else {
-            System.out.println("The other player is making a move");
-            readResponse();
-        }
-
-    }
-
-    /**
      * Prints the board whenever readResponse() reads ProtocolControl.sendBoard
      * @param fields
      * @return a String of the entire board
