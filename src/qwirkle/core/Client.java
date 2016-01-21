@@ -5,7 +5,8 @@ import qwirkle.core.*;
 import qwirkle.server.*;
 import qwirkle.protocol.*;
 import qwirkle.strategy.*;
-
+import twee.server.ProtocolConstants;
+import twee.server.ProtocolControl;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -143,6 +144,16 @@ public class Client extends Thread {
 		connectToServer();
 	}
 
+    private void connectToServer() {
+        this.sendMessage(Protocol.CLIENT_CORE_JOIN + Protocol.MESSAGESEPERATOR + clientName);
+        this.readResponse();
+
+        do {
+            String input = getInput("");
+            this.sendMessage(input);
+        } while (true);
+    }
+    
 	private void readResponse(){
 		try {
 			String reply = in.readLine();
@@ -267,24 +278,4 @@ public class Client extends Thread {
 		return input;
 
 	}
-
-	public class StartTimer extends Thread{
-
-		public boolean done = false;
-		private Client client;
-
-		public StartTimer(Client client) {
-			this.client = client;
-		}
-	}
-	  private void connectToServer() {
-	        this.sendMessage(Protocol.CLIENT_CORE_JOIN + Protocol.MESSAGESEPERATOR + clientName);
-	        this.readResponse();
-
-	        do {
-	            String input = getInput("");
-	            this.sendMessage(input);
-	        } while (true);
-	    }
-
 }
