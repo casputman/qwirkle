@@ -16,6 +16,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import qwirkle.protocol.Protocol;
+
 /**
  * 
  * @author Wouter Bolhuis & Sebastiaan den Boer
@@ -438,6 +440,8 @@ public class Client extends Thread {
         }
     }
 
+  
+
     /**
      * Prints the board whenever readResponse() reads ProtocolControl.sendBoard
      * @param fields
@@ -470,7 +474,7 @@ public class Client extends Thread {
      */
     //@pure
     private void connectToServer() {
-        this.sendMessage(ProtocolControl.joinRequest + ProtocolConstants.msgSeperator + clientName);
+        this.sendMessage(Protocol.CLIENT_CORE_JOIN + Protocol.MESSAGESEPERATOR + clientName);
         this.readResponse();
 
         do {

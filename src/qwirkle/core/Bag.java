@@ -12,6 +12,10 @@ public class Bag {
 	public Bag(){
 		tileBag = new HashMap<Tile, Integer>();{
 			for(i = 0; i < 6; i++){
+				Tile tile = new Tile(Tile.Shape.values()[0], Tile.Color.values()[i]);
+				tileBag.put(tile, 3);
+			}
+			for(i = 0; i < 6; i++){
 				Tile tile = new Tile(Tile.Shape.values()[1], Tile.Color.values()[i]);
 				tileBag.put(tile, 3);
 			}
@@ -29,10 +33,6 @@ public class Bag {
 			}
 			for(i = 0; i < 6; i++){
 				Tile tile = new Tile(Tile.Shape.values()[5], Tile.Color.values()[i]);
-				tileBag.put(tile, 3);
-			}
-			for(i = 0; i < 6; i++){
-				Tile tile = new Tile(Tile.Shape.values()[6], Tile.Color.values()[i]);
 				tileBag.put(tile, 3);
 			}
 		}

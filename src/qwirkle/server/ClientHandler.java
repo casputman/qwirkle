@@ -2,6 +2,7 @@ package qwirkle.server;
 
 import qwirkle.core.Game;
 import qwirkle.player.Player;
+import qwirkle.protocol.Protocol;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -48,11 +49,9 @@ public class ClientHandler extends Thread implements ProtocolControl{
                 String input = in.readLine().trim();
                 if (input.equals("Connection.Shutdown")) {
                     shutdown();
-                } else if (input.startsWith(ProtocolControl.joinRequest)) {
-                 //   String[] name = input.split(ProtocolConstants.msgSeperator);
-                    clientName = input.substring(12);
-                } else if (input.equals("Rematch.Cancel")) {
-                    rematch = false;
+                } else if (input.startsWith(Protocol.CLIENT_CORE_JOIN)){
+                	long millis = System.currentTimeMillis() % 1000;
+                    clientName = ("player" +(millis));
                 }
                 server.analyzeString(this, input);
              }

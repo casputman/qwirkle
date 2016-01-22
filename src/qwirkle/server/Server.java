@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 /**
  * 
- * @author Wouter Bolhuis & Sebastiaan den Boer
+ * @author Wouter Bolhuis & Cas Putman
  * @version 1.6
  */
 public class Server {
@@ -109,8 +109,9 @@ public class Server {
 		String[] input = msg.split(Protocol.MESSAGESEPERATOR);
 		if (input[0].equals(Protocol.CLIENT_CORE_JOIN)) {
 			threads.remove(handler);
-			for (int i = 0; i < 3; i++){
-				if (joined.size() < 4 && !joined.get(i).getClientName().equals(handler.getClientName())) {
+			for (int i = 0; i < joined.size(); i++){
+				if (joined.size() < 4 && !(joined.get(i).getClientName().equals(handler.getClientName()))) {
+				    System.out.println(handler);
 					joined.add(handler);
 					Player one = Player.createPlayer(handler.getClientName());
 					handler.setPlayer(one);
@@ -137,8 +138,7 @@ public class Server {
 					Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), null);
 				} else if (joined.size() == 4){
 					Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), joined.get(3).getPlayer());
-
-					ClientHandler[] clients = new ClientHandler[2];
+					ClientHandler[] clients = new ClientHandler[4];
 					int telInt = 0;
 					for (ClientHandler handle : joined) {
 						clients[telInt] = handle;

@@ -48,24 +48,29 @@ public class Client extends Thread {
 	private BufferedWriter out;
 	public boolean online;
 	private Player you;
-	private Player player1;
 	private Player player2;
 	private Player player3;
 	private Player player4;
 	private Game game;
 
 	public Client(){
-		startUp();
+		startup();
 	}
 
-	private void startUp(){
+	private void startup(){
 		if (isOnline()){
 			initializeClient();
 		} else {
-			game = new Game(player1, player2, player3, player4);
-			game.start();
+			game = new Game(you, player2, player3, player4);
+			game.run();
 			game.offline = true;
 		}
+	}
+	
+	public void assignPlayer(){
+		player2 = new ComputerPlayer();
+		player3 = new ComputerPlayer();
+		player4 = new ComputerPlayer();
 	}
 
 	private boolean isOnline() {
@@ -111,7 +116,7 @@ public class Client extends Thread {
 					+ "(leave blank for localhost"));
 		} catch (UnknownHostException e) {
 			System.err.println("ERROR: not a valid hostname!");
-			startUp();
+			startup();
 		}
 
 		try {
@@ -124,14 +129,14 @@ public class Client extends Thread {
 			}
 		} catch (NumberFormatException e) {
 			System.err.println("ERROR: not a valid portnummer!");
-			startUp();
+			startup();
 		}
 
 		try {
 			sock = new Socket(host, port);
 		} catch (IOException e) {
 			System.err.println("ERROR: socket could not be created!");
-			startUp();
+			startup();
 		}
 
 		try {
@@ -145,7 +150,7 @@ public class Client extends Thread {
 	}
 
     private void connectToServer() {
-        this.sendMessage(Protocol.CLIENT_CORE_JOIN + Protocol.MESSAGESEPERATOR + clientName);
+        this.sendMessage(Protocol.CLIENT_CORE_JOIN);
         this.readResponse();
 
         do {
@@ -177,7 +182,7 @@ public class Client extends Thread {
 					game.getBoard().printBoard();
 				} else if (reply.startsWith(Protocol.SERVER_CORE_GAME_ENDED)){
 					game.getBoard().printBoard();
-					game.getRules().listScores();
+					//game.getRules().listScores();
 					System.out.println("The ame has ended!");
 
 				}
@@ -208,7 +213,7 @@ public class Client extends Thread {
 		String menu = getInput("What now? Type either menu or exit");
 		while (menu != null) {
 			if (menu.equalsIgnoreCase("menu")) {
-				startUp();
+				startup();
 			} else if (menu.equalsIgnoreCase("exit")) {
 				shutdown();
 			} else {
