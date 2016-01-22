@@ -110,12 +110,13 @@ public class Server {
 		if (input[0].equals(Protocol.CLIENT_CORE_JOIN)) {
 			threads.remove(handler);
 			for (int i = 0; i < joined.size(); i++){
-				if (joined.size() < 4 && !(joined.get(i).getClientName().equals(handler.getClientName()))) {
-				    System.out.println(handler);
+				if (joined.size() < 4) {
+					System.out.println(handler);
 					joined.add(handler);
 					Player one = Player.createPlayer(handler.getClientName());
 					handler.setPlayer(one);
 					acceptRequest(handler);
+					sendMessage(handler, Protocol.SERVER_CORE_JOIN_ACCEPTED);
 					System.out.println("JOINING: " + handler.getClientName()
 					+ " is waiting for a game!");
 				} else {
@@ -124,44 +125,52 @@ public class Server {
 						Player two = Player.createPlayer(handler.getClientName());
 						handler.setPlayer(two);
 						acceptRequest(handler);
+						sendMessage(handler, Protocol.SERVER_CORE_JOIN_ACCEPTED);
 						System.out.println("JOINING: " + handler.getClientName()
 						+ " is waiting for a game.");
-					} else {
-						sendMessage(handler, ProtocolConstants.invalidCommand
-								+ Protocol.MESSAGESEPERATOR + ProtocolConstants.usernameInUse);
-						removeHandler(handler);
 					}
-				}
-				if (joined.size() == 2){ 
-					Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), null, null);
-				} else if (joined.size() == 3){
-					Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), null);
-				} else if (joined.size() == 4){
-					Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), joined.get(3).getPlayer());
-					ClientHandler[] clients = new ClientHandler[4];
-					int telInt = 0;
-					for (ClientHandler handle : joined) {
-						clients[telInt] = handle;
-						telInt++;
-					}
-					ClientHandler firstPlayer;
-					firstPlayer = joined.get(0);
-					gameMap.put(game, clients);
-					for (ClientHandler handle : joined) {
-						handle.setGame(game);
-						sendMessage(handle, Protocol.SERVER_CORE_START 
-								+ Protocol.MESSAGESEPERATOR + firstPlayer.getClientName() 
-								+ Protocol.MESSAGESEPERATOR
-								+ handler2(firstPlayer).getClientName());
-						playing.add(handle);
-					}
-					joined.clear();
-					game.run();
+					if (joined.size() == 2){ 
+						Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), null, null);
+					} else if (joined.size() == 3){
+						Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), null);
+					} else if (joined.size() == 4){
+						Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), joined.get(3).getPlayer());
+						ClientHandler[] clients = new ClientHandler[4];
+						int telInt = 0;
+						for (ClientHandler handle : joined) {
+							clients[telInt] = handle;
+							telInt++;
+						}
+						ClientHandler firstPlayer;
+						firstPlayer = joined.get(0);
+						gameMap.put(game, clients);
+						for (ClientHandler handle : joined) {
+							handle.setGame(game);
+							sendMessage(handle, Protocol.SERVER_CORE_START 
+									+ Protocol.MESSAGESEPERATOR + firstPlayer.getClientName() 
+									+ Protocol.MESSAGESEPERATOR
+									+ handler2(firstPlayer).getClientName());
+							playing.add(handle);
+						}
+						joined.clear();
+						game.run();
 
+					}
+				} 
+			} 
+		} else if (input[0].equals(Protocol.CLIENT_CORE_MOVE)) {
+			doMove(handler, input[1]); 
+		} else if (input[0].equals(Protocol.CLIENT_CORE_PLAYERS)){
+			for (int i = 0; i < joined.size(); i++){
+				sendMessage(handler, Protocol.SERVER_CORE_PLAYERS + Protocol.MESSAGESEPERATOR + joined.get(i).getClientName()); }
+		} else if (input[0].equals(Protocol.CLIENT_CHAT_WHISPER_SEND)){
+			for (int i = 0; i < joined.size(); i++){
+				if (input[1].equals(joined.get(i).getClientName())){
+					for(int n = 0; i < input.length; n++){
+						sendMessage(joined.get(i), input[n]);
+					}
 				}
 			}
-		} else if (input[0].equals(Protocol.CLIENT_CORE_MOVE)) {
-			doMove(handler, input[1]);
 		}
 	}
 
