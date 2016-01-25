@@ -30,7 +30,6 @@ public class Rules {
 		int[] coord = Board.splitString(coords);
 		int x = coord[0];
 		int y = coord[1];
-		System.err.println("freeCoords: " + freeCoords(coords));
 		if(freeCoords(coords)){
 			if(game.current.getHand().contains(tile)){
 				ArrayList<Tile> surrounding = surrounding(coords);
@@ -48,7 +47,6 @@ public class Rules {
 						allowed = true;
 					}
 				} else if(game.getBoard().getTiles().isEmpty()){
-					System.err.println("hier");
 					allowed = true;
 				}
 			}

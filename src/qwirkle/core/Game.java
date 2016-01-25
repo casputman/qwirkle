@@ -63,12 +63,19 @@ public class Game {
 		running = true;
 		this.nextPlayer();
 		makeMoves(current.determineMove(this));
+		System.err.println(current);
+		System.err.println("Going to print board");
 		board.printBoard();
+		System.err.println("Board printed");
 		
 		if(this.offline){
+			System.err.println("entering if");
 			while(this.getRules().hasWinner()){
+				System.err.println("we're in while");
 				this.nextPlayer();
+				System.err.println(current);
 				makeMoves(current.determineMove(this));
+				board.printBoard();
 			}
 		}
 	}
@@ -97,6 +104,8 @@ public class Game {
 		if(current != null || players.get(player).equals(current)){
 			player += 1;
 			player %= players.size();
+			System.err.println("player: " + players.get(player));
+			System.err.println("player1: " + players.get(player + 1));
 			current = players.get(player);
 		} else if (current == null){
 			int random = (int )(Math.random() * players.size());
@@ -140,14 +149,13 @@ public class Game {
 	
 	public int calculateScore(Map<String, Tile> moves){
 		int score = 0;
-		Board copyBoard = this.getBoard();
 		Set<String> coords = moves.keySet();
 		for(String coord: coords){
-			copyBoard.makeMove(coord, moves.get(coord), this);
+			board.makeMove(coord, moves.get(coord), this);
 		}
 		//Now we have a board with all the moves made
 		//We can use this board to compare with the board before the moves were made
-		Map<String, Tile> newBoard = copyBoard.getTiles();
+		Map<String, Tile> newBoard = board.getTiles();
 		Set<String> newBoardCoords = newBoard.keySet();
 		Set<String> newCoords = moves.keySet();
 		//Now we know which tiles have been put down this turn.
@@ -160,7 +168,7 @@ public class Game {
 					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
 						int points = 0;
 						for(int j = 0; i > -6; i--){
-							String temp2 = board.makeString(Board.splitString(temp)[0] + j, Board.splitString(temp)[1]);
+							String temp2 = Board.makeString(Board.splitString(temp)[0] + j, Board.splitString(temp)[1]);
 							if(newBoardCoords.contains(temp2) && !newBoard.get(temp2).equals(null)){
 								points += 1;
 								int[] takeX = surroundings.get(temp2);
@@ -180,7 +188,7 @@ public class Game {
 					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
 						int points = 0;
 						for(int j = 0; i > -6; i--){
-							String temp2 = board.makeString(Board.splitString(temp)[0], Board.splitString(temp)[1]+j);
+							String temp2 = Board.makeString(Board.splitString(temp)[0], Board.splitString(temp)[1]+j);
 							if(newBoardCoords.contains(temp2) && !newBoard.get(temp2).equals(null)){
 								points += 1;
 								int[] takeX = surroundings.get(temp2);
@@ -204,10 +212,12 @@ public class Game {
 		boolean succes = true;
 		current.addScore(calculateScore(moves));
 		Set<String> coords = moves.keySet();
+		Board copyBoard = this.getBoard();
 		for(String coord: coords){
 			if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){
 			} else {
 				succes = false;
+				board = copyBoard;
 			}
 		}
 		return succes;

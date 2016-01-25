@@ -20,7 +20,7 @@ public class ComputerPlayer extends Player {
 	            "Bolhuis", "Putman"
 	             + ""));
 	 
-	 private Strategy strategy;
+	 public Strategy strategy;
 	 private String ai;
 	
 	public ComputerPlayer(String name) {
@@ -34,7 +34,9 @@ public class ComputerPlayer extends Player {
         if (ai.equalsIgnoreCase("smart")) {
             this.strategy = new SmartStrategy();
         } else if (ai.equalsIgnoreCase("stupid")) {
+        	System.err.println("making stupid");
             this.strategy = new StupidStrategy();
+            System.err.println(this.strategy);
         } else {
             System.err.println("'" + ai + "' is not one of the possibilities");
             new ComputerPlayer();
@@ -55,8 +57,9 @@ public class ComputerPlayer extends Player {
 
 	@Override
 	public Map<String, Tile> determineMove(Game game) {
-		Strategy test = new StupidStrategy();
-		return test.determineMove(game, game.current.getHand());
+		System.err.println("making move");
+		System.err.println(this.strategy);
+		return this.strategy.determineMove(game, game.current.getHand());
 	}
 
 }

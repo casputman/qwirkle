@@ -25,7 +25,6 @@ public class Board {
 			tiles.put(coords, tile);
 			int tileNumber = 0;
 			for(int i = 0; i < game.current.getHand().size(); i++){
-				System.err.println("3");
 				if(game.current.getHand().get(i).equals(tile)){
 					tileNumber = i;
 					break;
@@ -38,6 +37,7 @@ public class Board {
 		}
 		return moveMade;
 	}
+	
 	public Tile makeTile(int x, int y){
 		Shape shape = Shape.values()[x];
 		Color color = Color.values()[y];
@@ -73,7 +73,7 @@ public class Board {
 	public String toString(){
 		String toReturn = "";
 		int[] limits = getLimits(this.tiles);
-		for(int i = limits[2]; i <= limits[0]; i--){
+		for(int i = limits[2]; i >= limits[0]; i--){
 			for(int j = limits[1]; j <= limits[3]; j++){
 				String coords = makeString(j,i);
 				if(tiles.containsKey(coords)){
