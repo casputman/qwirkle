@@ -25,8 +25,8 @@ public class HumanPlayer extends Player {
         StartTimer timer = new StartTimer(board, this);
         timer.start();
             Map<String, Tile> moveMap = new HashMap<String, Tile>();
-            System.out.println(this.name + ", please make your move (x -space- y) ");
-    
+            System.out.println(this.name + ", please make your move (x -space- y -space- tile) ");
+            System.out.println(getHand());
             String input = "";
     
             try {
@@ -40,13 +40,14 @@ public class HumanPlayer extends Player {
                 String coordinatesArray[] = coordinates.split(Protocol.MESSAGESEPERATOR);
                 int xCoordinate = Integer.parseInt(coordinatesArray[0]);
                 int yCoordinate = Integer.parseInt(coordinatesArray[1]);
-                int shape = Integer.parseInt(coordinatesArray[2]);
-                int color = Integer.parseInt(coordinatesArray[3]);
+                int tileSelection = Integer.parseInt(coordinatesArray[2]);
+                Tile tile = getHand().get(tileSelection);
                 String parsedCoordinates  = Board.makeString(xCoordinate, yCoordinate);
-                Tile tile = board.makeTile(shape, color);
+              
                 if (game.getRules().isMoveAllowed(parsedCoordinates, tile)) {
                     timer.done = true;
-                	moveMap.put(parsedCoordinates, tile);
+                    game.getBoard().makeMove(parsedCoordinates, tile, game);
+                	getHand().remove(tileSelection);
                 } else {
                     System.out.println("Invalid move, please try again\n");
                     this.determineMove(game);
