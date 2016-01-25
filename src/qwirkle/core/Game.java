@@ -29,12 +29,27 @@ public class Game {
 		bag = new Bag();
 		player = 0;
 		rules = new Rules(this);
+		firstTiles();
 	}
 	
+	private void firstTiles() {
+		System.err.println("Distributing tiles");
+		giveTiles(players[0]);
+		giveTiles(players[1]);
+		giveTiles(players[2]);
+		giveTiles(players[3]);
+	}
+
 	public void run(){
 		running = true;
+		this.nextPlayer();
+		current.determineMove(this);
 		board.printBoard();
 		this.nextPlayer();
+		
+		if(this.offline){
+			current.determineMove(this);
+		}
 	}
 	
 	public void stopGame(){
@@ -55,13 +70,15 @@ public class Game {
 	}
 	
 	public void nextPlayer(){
-		giveTiles(current);
-		if(players[player].equals(current) || !current.equals(null)){
+		if(current != null){
+			giveTiles(current);
+		}
+		if(current != null || players[player].equals(current)){
 			player += 1;
 			player %= 4;
 			current = players[player];
-		} else if (current.equals(null)){
-			int random = (int )(Math.random() * 4 + 1);
+		} else if (current == null){
+			int random = (int )(Math.random() * 4);
 			current = players[random];
 		} else {
 			for (int i = 0; i < players.length; i++){
@@ -76,7 +93,7 @@ public class Game {
 	
 	public void giveTiles(Player player){
 		while(player.getHand().size() < 6){
-			giveTile(player);
+			player.addTile(bag.drawTile());
 		}
 	}
 	
@@ -90,13 +107,6 @@ public class Game {
 	
 	public Bag getBag(){
 		return this.bag;
-	}
-	
-	public void giveTile(Player player){
-		ArrayList<Tile> tempHand = player.getHand();
-		for (int i = 0; i < tempHand.size(); i++){
-			player.addTile(bag.drawTile());
-		}
 	}
 	
 	public void takeTile(Player player, int index){

@@ -14,26 +14,46 @@ public class Bag {
 			for(i = 0; i < 6; i++){
 				Tile tile = new Tile(Tile.Shape.values()[0], Tile.Color.values()[i]);
 				tileBag.put(tile, 3);
+				System.err.println(tileBag.get(tile));
 			}
+			System.err.println("-");
 			for(i = 0; i < 6; i++){
 				Tile tile = new Tile(Tile.Shape.values()[1], Tile.Color.values()[i]);
 				tileBag.put(tile, 3);
+				System.err.println(tileBag.get(tile));
+
 			}
+			System.err.println("-");
+
 			for(i = 0; i < 6; i++){
 				Tile tile = new Tile(Tile.Shape.values()[2], Tile.Color.values()[i]);
 				tileBag.put(tile, 3);
+				System.err.println(tileBag.get(tile));
+
 			}
+			System.err.println("-");
+
 			for(i = 0; i < 6; i++){
 				Tile tile = new Tile(Tile.Shape.values()[3], Tile.Color.values()[i]);
 				tileBag.put(tile, 3);
+				System.err.println(tileBag.get(tile));
+
 			}
+			System.err.println("-");
+
 			for(i = 0; i < 6; i++){
 				Tile tile = new Tile(Tile.Shape.values()[4], Tile.Color.values()[i]);
 				tileBag.put(tile, 3);
+				System.err.println(tileBag.get(tile));
+
 			}
+			System.err.println("-");
+
 			for(i = 0; i < 6; i++){
 				Tile tile = new Tile(Tile.Shape.values()[5], Tile.Color.values()[i]);
 				tileBag.put(tile, 3);
+				System.err.println(tileBag.get(tile));
+
 			}
 		}
 	}
@@ -47,16 +67,21 @@ public class Bag {
 	public Tile drawTile(){
 		Random s = new Random();
 		int range = 6;
-		int randomS =  s.nextInt(range) + 1;
+		int randomS =  s.nextInt(range);
 		Random c = new Random();
-		int randomC = c.nextInt(range) + 1;
+		int randomC = c.nextInt(range);
 		Tile.Shape shape = null;
 		Tile.Color color = null;
 		shape = Tile.Shape.values()[randomS];
 		color = Tile.Color.values()[randomC];
 		Tile tile = new Tile(shape, color);
+		System.err.println(tileBag.isEmpty());
 		int amount = tileBag.get(tile);
-		tileBag.put(tile, amount -1);
+		if(amount > 0){
+			tileBag.put(tile, amount -1);
+		} else {
+			tile = drawTile();
+		}
 		return tile;
 	}
 

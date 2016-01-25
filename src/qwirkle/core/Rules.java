@@ -46,6 +46,8 @@ public class Rules {
 					if(valid == surrounding.size()){
 						allowed = true;
 					}
+				} else if(game.getBoard().getTiles().isEmpty()){
+					allowed = true;
 				}
 			}
 		}

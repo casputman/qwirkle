@@ -48,6 +48,8 @@ public class ComputerPlayer extends Player {
 
 	@Override
 	public Map<String, Tile> determineMove(Game game) {
+		System.err.println(strategy);
+		System.err.println(game.current.getHand());
 		return strategy.determineMove(game, game.current.getHand());
 	}
 

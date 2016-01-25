@@ -16,6 +16,7 @@ public class HumanPlayer extends Player {
 
 
     public HumanPlayer(String name) {
+    	super(name);
     }
    
     @Override
@@ -24,7 +25,7 @@ public class HumanPlayer extends Player {
         StartTimer timer = new StartTimer(board, this);
         timer.start();
             Map<String, Tile> moveMap = new HashMap<String, Tile>();
-            System.out.println(game.current.getName() + ", please make your move (x -space- y");
+            System.out.println(this.name + ", please make your move (x -space- y) ");
     
             String input = "";
     
