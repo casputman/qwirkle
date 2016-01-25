@@ -35,7 +35,7 @@ public class HumanPlayer extends Player {
             } catch (IOException e) {
                 System.out.println("shit went down");
             }
-            if ((input.startsWith("MOVE") && input.length() > 10) || input.length() == 7) {
+            if ((input.startsWith("MOVE") && input.length() > 9) || input.length() == 7) {
                 String coordinates = input.replace("MOVE ", "");
                 String coordinatesArray[] = coordinates.split(Protocol.MESSAGESEPERATOR);
                 int xCoordinate = Integer.parseInt(coordinatesArray[0]);
@@ -43,7 +43,6 @@ public class HumanPlayer extends Player {
                 int tileSelection = Integer.parseInt(coordinatesArray[2]);
                 Tile tile = getHand().get(tileSelection);
                 String parsedCoordinates  = Board.makeString(xCoordinate, yCoordinate);
-              
                 if (game.getRules().isMoveAllowed(parsedCoordinates, tile)) {
                     timer.done = true;
                     game.getBoard().makeMove(parsedCoordinates, tile, game);
