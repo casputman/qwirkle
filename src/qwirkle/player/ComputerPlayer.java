@@ -24,7 +24,7 @@ public class ComputerPlayer extends Player {
 	 private String ai;
 	
 	public ComputerPlayer(String name) {
-		super(name);
+		this.name = nameGenerator();
 		try {
             System.out.println("\nPlease choose an ai (either Smart or Stupid)");
             this.ai = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
@@ -42,9 +42,16 @@ public class ComputerPlayer extends Player {
 	}
 	
 	public ComputerPlayer(){
-		new ComputerPlayer(NAMES.get((int) (System.currentTimeMillis() % NAMES.size())));
+		long millis = System.currentTimeMillis() % 1000;
+        String clientName = ("computerPlayer" +(millis));
+		new ComputerPlayer(clientName);
 	}
-
+	
+	public String nameGenerator(){
+		long millis = System.currentTimeMillis() % 1000;
+        String clientName = ("computerPlayer" +(millis));
+        return clientName;
+	}
 
 	@Override
 	public Map<String, Tile> determineMove(Game game) {

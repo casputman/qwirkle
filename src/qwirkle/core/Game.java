@@ -12,7 +12,7 @@ public class Game {
 	
 	private Bag bag;
 	private int player;
-	private Player[] players = new Player[4];
+	private ArrayList<Player> players = new ArrayList<Player>();
 	public Player current;
 	private Rules rules;
 	
@@ -22,10 +22,30 @@ public class Game {
 	
 	public Game(Player one, Player two, Player three, Player four){
 		board = new Board();
-		players[0] = one;
-		players[1] = two;
-		players[2] = three;
-		players[3] = four;
+		players.add(one);
+		players.add(two);
+		players.add(three);
+		players.add(four);
+		bag = new Bag();
+		player = 0;
+		rules = new Rules(this);
+		firstTiles();
+	}
+	
+	public Game(Player one, Player two){
+		board = new Board();
+		players.add(one);
+		players.add(two);
+		bag = new Bag();
+		player = 0;
+		rules = new Rules(this);
+		firstTiles();
+	}
+
+	public Game(Player one, Player two, Player three){
+		players.add(one);
+		players.add(two);
+		players.add(three);
 		bag = new Bag();
 		player = 0;
 		rules = new Rules(this);
@@ -34,10 +54,9 @@ public class Game {
 	
 	private void firstTiles() {
 		System.err.println("Distributing tiles");
-		giveTiles(players[0]);
-		giveTiles(players[1]);
-		giveTiles(players[2]);
-		giveTiles(players[3]);
+		for (int i = 0; i < players.size(); i++){
+		giveTiles(players.get(i));
+		}
 	}
 
 	public void run(){
@@ -75,19 +94,19 @@ public class Game {
 		if(current != null){
 			giveTiles(current);
 		}
-		if(current != null || players[player].equals(current)){
+		if(current != null || players.get(player).equals(current)){
 			player += 1;
-			player %= 4;
-			current = players[player];
+			player %= players.size();
+			current = players.get(player);
 		} else if (current == null){
-			int random = (int )(Math.random() * 4);
-			current = players[random];
+			int random = (int )(Math.random() * players.size());
+			current = players.get(random);
 		} else {
-			for (int i = 0; i < players.length; i++){
-				if(players[i].equals(current)){
+			for (int i = 0; i < players.size(); i++){
+				if(players.get(i).equals(current)){
 					i += 1;
-					i %= 4;
-					current = players[i];
+					i %= players.size();
+					current = players.get(i);
 				}
 			}
 		}

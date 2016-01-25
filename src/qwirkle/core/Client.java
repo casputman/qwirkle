@@ -57,13 +57,38 @@ public class Client extends Thread {
 		startup();
 	}
 
+	public String nameGenerator(){
+		long millis = System.currentTimeMillis() % 1000;
+        String clientName = ("computerPlayer" +(millis));
+        return clientName;
+	}
+	
+	public void numberOfPlayers(){
+		String input = "";
+		input = getInput("How many opponents do you want to play against?");
+		if (input.equals("1")){
+			player2 = new ComputerPlayer(nameGenerator());
+			game = new Game(you, player2);
+		} else if 
+		(input.equals("2")){
+			player2 = new ComputerPlayer();
+			player3 = new ComputerPlayer();
+			game = new Game(you, player2, player3);
+		} else if 
+		(input.equals("3")){
+			player2 = new ComputerPlayer();
+			player3 = new ComputerPlayer();
+			player4 = new ComputerPlayer();
+			game = new Game(you, player2, player3, player4);
+		}
+	}
+	
 	private void startup(){
 		if (isOnline()){
 			initializeClient();
 		} else {
 			makePlayer();
-			assignPlayer();
-			game = new Game(you, player2, player3, player4);
+			numberOfPlayers();
 			game.offline = true;
 			game.run();
 		}
