@@ -34,9 +34,7 @@ public class ComputerPlayer extends Player {
         if (ai.equalsIgnoreCase("smart")) {
             this.strategy = new SmartStrategy();
         } else if (ai.equalsIgnoreCase("stupid")) {
-        	System.err.println("making stupid");
             this.strategy = new StupidStrategy();
-            System.err.println(this.strategy);
         } else {
             System.err.println("'" + ai + "' is not one of the possibilities");
             new ComputerPlayer();
