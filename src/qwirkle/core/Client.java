@@ -61,16 +61,29 @@ public class Client extends Thread {
 		if (isOnline()){
 			initializeClient();
 		} else {
-			game = new Game(you, player2, player3, player4);
+			numberOfPlayers();
 			game.run();
 			game.offline = true;
 		}
 	}
-	
-	public void assignPlayer(){
-		player2 = new ComputerPlayer();
-		player3 = new ComputerPlayer();
-		player4 = new ComputerPlayer();
+	public void numberOfPlayers(){
+		String input = "";
+		input = getInput("How many opponents do you want to play against?");
+		if (input.equals("1")){
+			player2 = new ComputerPlayer();
+			game = new Game(you, player2, null, null);
+		} else if 
+		(input.equals("2")){
+			player2 = new ComputerPlayer();
+			player3 = new ComputerPlayer();
+			game = new Game(you, player2, player3, null);
+		} else if 
+		(input.equals("3")){
+			player2 = new ComputerPlayer();
+			player3 = new ComputerPlayer();
+			player4 = new ComputerPlayer();
+			game = new Game(you, player2, player3, player4);
+		}
 	}
 
 	private boolean isOnline() {
@@ -149,16 +162,16 @@ public class Client extends Thread {
 		connectToServer();
 	}
 
-    private void connectToServer() {
-        this.sendMessage(Protocol.CLIENT_CORE_JOIN);
-        this.readResponse();
+	private void connectToServer() {
+		this.sendMessage(Protocol.CLIENT_CORE_JOIN);
+		this.readResponse();
 
-        do {
-            String input = getInput("");
-            this.sendMessage(input);
-        } while (true);
-    }
-    
+		do {
+			String input = getInput("");
+			this.sendMessage(input);
+		} while (true);
+	}
+
 	private void readResponse(){
 		try {
 			String reply = in.readLine();
