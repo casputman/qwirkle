@@ -55,7 +55,7 @@ public class Rules {
 	}
 	
 	public boolean freeCoords(String coords){
-		return board.getTiles().containsKey(coords);
+		return !board.getTiles().containsKey(coords);
 	}
 	
 	public ArrayList<Tile> surrounding(String coords){

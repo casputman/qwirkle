@@ -15,11 +15,13 @@ public class StupidStrategy implements Strategy {
 		Map<String, Tile> toReturn = new HashMap<String, Tile>();
 		Set<String> emptyCoords = SmartStrategy.emptyCoords(game);
 		for(String coords: emptyCoords){
+			System.err.println(coords);
 			for(Tile tile : hand){
+				System.err.println(tile);
 				if(game.getRules().isMoveAllowed(coords, tile)){
 					toReturn.put(coords, tile);
 				}
-				toReturn.put(coords, tile);
+				System.err.println(game.getRules().isMoveAllowed(coords, tile));
 			}
 		}
 		return toReturn;

@@ -39,7 +39,7 @@ public class Tile {
 		}
 	}
 	
-	 public String toString() {
-	        return this.getColor().name() + " " + this.getShape().name();
-	    }
+	public String toString() {
+		return this.getColor().name() + " " + this.getShape().name();
+	}
 }
