@@ -61,11 +61,19 @@ public class Client extends Thread {
 		if (isOnline()){
 			initializeClient();
 		} else {
+<<<<<<< HEAD
 			numberOfPlayers();
 			game.run();
+=======
+			makePlayer();
+			assignPlayer();
+			game = new Game(you, player2, player3, player4);
+>>>>>>> origin/master
 			game.offline = true;
+			game.run();
 		}
 	}
+<<<<<<< HEAD
 	public void numberOfPlayers(){
 		String input = "";
 		input = getInput("How many opponents do you want to play against?");
@@ -84,6 +92,27 @@ public class Client extends Thread {
 			player4 = new ComputerPlayer();
 			game = new Game(you, player2, player3, player4);
 		}
+=======
+	
+	private void makePlayer() {
+		String input = "";
+		input = getInput("Please enter your name: ");
+		if(input.contains(" ")){
+			System.err.println("Your name can not have a space in it");
+			makePlayer();
+		} else {
+			you = new HumanPlayer(input);
+		}
+		
+	}
+	public void assignPlayer(){
+		System.out.println("Player2: ");
+		player2 = new ComputerPlayer();
+		System.out.println("Player3: ");
+		player3 = new ComputerPlayer();
+		System.out.println("Player4: ");
+		player4 = new ComputerPlayer();
+>>>>>>> origin/master
 	}
 
 	private boolean isOnline() {

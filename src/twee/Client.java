@@ -360,7 +360,12 @@ public class Client extends Thread {
         }
     }
     
-    /**
+    private void makeMove(String clientName2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
      * This method will close the socket and thus disconnect from the server
      * afterwards it will give the client the opportunity to call startup()
      * and thus make all the startup decisions again or to terminate the client

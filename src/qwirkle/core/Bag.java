@@ -45,18 +45,18 @@ public class Bag {
 	public Map<Tile, Integer> tileBag;
 
 	public Tile drawTile(){
+		Set<Tile> tiles = tileBag.keySet();
+		Tile[] tileArray = new Tile[36];
+		tiles.toArray(tileArray);
 		Random s = new Random();
-		int range = 6;
-		int randomS =  s.nextInt(range) + 1;
-		Random c = new Random();
-		int randomC = c.nextInt(range) + 1;
-		Tile.Shape shape = null;
-		Tile.Color color = null;
-		shape = Tile.Shape.values()[randomS];
-		color = Tile.Color.values()[randomC];
-		Tile tile = new Tile(shape, color);
+		int random = s.nextInt(32);
+		Tile tile = tileArray[random];
 		int amount = tileBag.get(tile);
-		tileBag.put(tile, amount -1);
+		if(amount > 0){
+			tileBag.put(tile, amount -1);
+		} else {
+			tile = drawTile();
+		}
 		return tile;
 	}
 

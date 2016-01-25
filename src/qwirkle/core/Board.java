@@ -72,7 +72,6 @@ public class Board {
 	public String toString(){
 		String toReturn = "";
 		int[] limits = getLimits(this.tiles);
-		
 		for(int i = limits[2]; i <= limits[0]; i--){
 			for(int j = limits[1]; j <= limits[3]; j++){
 				String coords = makeString(j,i);
