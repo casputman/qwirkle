@@ -25,6 +25,7 @@ public class Board {
 			tiles.put(coords, tile);
 			int tileNumber = 0;
 			for(int i = 0; i < game.current.getHand().size(); i++){
+				System.err.println("3");
 				if(game.current.getHand().get(i).equals(tile)){
 					tileNumber = i;
 					break;

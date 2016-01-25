@@ -43,12 +43,14 @@ public class Game {
 	public void run(){
 		running = true;
 		this.nextPlayer();
-		current.determineMove(this);
+		makeMoves(current.determineMove(this));
 		board.printBoard();
-		this.nextPlayer();
 		
 		if(this.offline){
-			current.determineMove(this);
+			while(this.getRules().hasWinner()){
+				this.nextPlayer();
+				makeMoves(current.determineMove(this));
+			}
 		}
 	}
 	
@@ -185,7 +187,6 @@ public class Game {
 		Set<String> coords = moves.keySet();
 		for(String coord: coords){
 			if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){
-				
 			} else {
 				succes = false;
 			}

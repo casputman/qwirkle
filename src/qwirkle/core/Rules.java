@@ -30,6 +30,7 @@ public class Rules {
 		int[] coord = Board.splitString(coords);
 		int x = coord[0];
 		int y = coord[1];
+		System.err.println("freeCoords: " + freeCoords(coords));
 		if(freeCoords(coords)){
 			if(game.current.getHand().contains(tile)){
 				ArrayList<Tile> surrounding = surrounding(coords);
@@ -47,6 +48,7 @@ public class Rules {
 						allowed = true;
 					}
 				} else if(game.getBoard().getTiles().isEmpty()){
+					System.err.println("hier");
 					allowed = true;
 				}
 			}
@@ -64,14 +66,14 @@ public class Rules {
 		int y = Board.splitString(coords)[1];
 		for (int i = -1; i < 2; i += 2){
 			x += -1;
-			if(!tiles.get(Board.makeString(x, y)).equals(null)){
+			if(tiles.containsKey(Board.makeString(x, y)) && !tiles.get(Board.makeString(x, y)).equals(null)){
 				surrounding.add(tiles.get(Board.makeString(x, y)));
 			}
 		}
 		x = Board.splitString(coords)[0];
 		for (int i = -1; i < 2; i += 2){
 			y += -1;
-			if(!tiles.get(Board.makeString(x, y)).equals(null)){
+			if(tiles.containsKey(Board.makeString(x, y)) && !tiles.get(Board.makeString(x, y)).equals(null)){
 				surrounding.add(tiles.get(Board.makeString(x, y)));
 			}
 		}
