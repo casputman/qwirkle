@@ -64,7 +64,6 @@ public class Game {
 		running = true;
 		this.nextPlayer();
 		makeMoves(current.determineMove(this));
-		System.err.println(current);
 		if(current.getClass() == HumanPlayer.class){
 			current.printScore();
 		}
@@ -72,9 +71,7 @@ public class Game {
 		
 		if(this.offline){
 			while(!this.getRules().hasWinner() && getRunning()){
-				this.nextPlayer();
 				makeMoves(current.determineMove(this));
-				System.err.println(current);
 				if(current.getClass() == HumanPlayer.class){
 					current.printScore();
 				}
