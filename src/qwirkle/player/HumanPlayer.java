@@ -72,9 +72,8 @@ public class HumanPlayer extends Player {
             try {
                 Thread.sleep(10000);
                 if (!done) {
-                    Player hint = new ComputerPlayer("smart");
-                    System.out.println("I would suggest this move: " 
-                    +  hint.determineMove(game));
+                   // Player hint = new ComputerPlayer("smart");
+                    System.out.println("Sadly we can't help you here, our AI is probably worse than you are" );
                     done = true;
                 }
             } catch (InterruptedException e) {
