@@ -98,8 +98,6 @@ public class Game {
 		if(current != null || players.get(player).equals(current)){
 			player += 1;
 			player %= players.size();
-			System.err.println("player: " + current);
-			//System.err.println("player1: " + players.get(player + 1));
 			current = players.get(player);
 		} else if (current == null){
 			int random = (int )(Math.random() * players.size());
