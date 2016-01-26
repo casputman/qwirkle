@@ -20,7 +20,7 @@ public class ComputerPlayer extends Player {
 	            "Bolhuis", "Putman"
 	             + ""));
 	 
-	 public Strategy strategy;
+	 public Strategy strategy = new StupidStrategy();
 	 private String ai;
 	
 	public ComputerPlayer(String name) {
@@ -32,7 +32,8 @@ public class ComputerPlayer extends Player {
             System.out.println("That didn't work...please try again.");
         }
         if (ai.equalsIgnoreCase("smart")) {
-            this.strategy = new SmartStrategy();
+        	System.err.println("Smart strategy is currently non-functional");
+            this.strategy = new StupidStrategy();
         } else if (ai.equalsIgnoreCase("stupid")) {
             this.strategy = new StupidStrategy();
         } else {
@@ -42,9 +43,7 @@ public class ComputerPlayer extends Player {
 	}
 	
 	public ComputerPlayer(){
-		long millis = System.currentTimeMillis() % 1000;
-        String clientName = ("computerPlayer" +(millis));
-		new ComputerPlayer(clientName);
+		new ComputerPlayer(nameGenerator());
 	}
 	
 	public String nameGenerator(){
