@@ -35,9 +35,10 @@ public class HumanPlayer extends Player {
             } catch (IOException e) {
                 System.out.println("shit went down");
             }
-            if ((input.startsWith("MOVE") && input.length() > 9) || input.length() == 7) {
+            if ((input.startsWith("MOVE") && input.length() > 9) || input.length() > 5) {
                 String coordinates = input.replace("MOVE ", "");
-                String coordinatesArray[] = coordinates.split(Protocol.MESSAGESEPERATOR);
+                String[] coordinatesArray = coordinates.split(Protocol.MESSAGESEPERATOR);
+                System.err.println(coordinatesArray);
                 int xCoordinate = Integer.parseInt(coordinatesArray[0]);
                 int yCoordinate = Integer.parseInt(coordinatesArray[1]);
                 int tileSelection = Integer.parseInt(coordinatesArray[2]);
@@ -73,7 +74,7 @@ public class HumanPlayer extends Player {
                 Thread.sleep(10000);
                 if (!done) {
                    // Player hint = new ComputerPlayer("smart");
-                    System.out.println("Sadly we can't help you here, our AI is probably worse than you are" );
+                 //   System.out.println("Sadly we can't help you here, our AI is probably worse than you are" );
                     done = true;
                 }
             } catch (InterruptedException e) {

@@ -18,6 +18,7 @@ public class StupidStrategy implements Strategy {
 			for(Tile tile : hand){
 				if(game.getRules().isMoveAllowed(coords, tile)){
 					toReturn.put(coords, tile);
+					System.err.println(coords + tile);
 					break;
 				}
 			}

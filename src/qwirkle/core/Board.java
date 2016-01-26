@@ -74,6 +74,10 @@ public class Board {
 		String toReturn = "";
 		int[] limits = getLimits(this.tiles);
 		for(int i = limits[2]; i >= limits[0]; i--){
+			toReturn  += i;
+			 for (int k = Integer.toString(i).length(); k < 4; k++) {
+	                toReturn += " ";
+	            }
 			for(int j = limits[1]; j <= limits[3]; j++){
 				String coords = makeString(j,i);
 				if(tiles.containsKey(coords)){
@@ -84,6 +88,18 @@ public class Board {
 			}
 			toReturn = toReturn + "\n";
 		}
+		toReturn += "    ";
+        for (int x = limits[3]; x <= limits[1]; x++) {
+            toReturn += " ";
+            if (x >= 0) {
+                toReturn += " ";
+            }
+            toReturn += x;
+            toReturn += " ";
+            if (x > -10 && x < 10) {
+                toReturn += " ";
+            }
+        }
 		return toReturn;
 	}
 	
