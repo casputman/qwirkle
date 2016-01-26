@@ -63,17 +63,11 @@ public class Game {
 		running = true;
 		this.nextPlayer();
 		makeMoves(current.determineMove(this));
-		System.err.println(current);
-		System.err.println("Going to print board");
 		board.printBoard();
-		System.err.println("Board printed");
 		
 		if(this.offline){
-			System.err.println("entering if");
-			while(this.getRules().hasWinner()){
-				System.err.println("we're in while");
+			while(!this.getRules().hasWinner() && getRunning()){
 				this.nextPlayer();
-				System.err.println(current);
 				makeMoves(current.determineMove(this));
 				board.printBoard();
 			}
@@ -221,5 +215,9 @@ public class Game {
 			}
 		}
 		return succes;
+	}
+	
+	public ArrayList<Player> getPlayers(){
+		return this.players;
 	}
 }
