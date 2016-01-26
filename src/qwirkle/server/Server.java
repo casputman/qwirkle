@@ -129,12 +129,13 @@ public class Server {
 						System.out.println("JOINING: " + handler.getClientName()
 						+ " is waiting for a game.");
 					}
-					if (joined.size() == 2){ 
-						Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), null, null);
-					} else if (joined.size() == 3){
-						Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), null);
-					} else if (joined.size() == 4){
-						Game game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), joined.get(3).getPlayer());
+					Game game;
+					if (joined.size() == 2 && input[0].equals(Protocol.CLIENT_CORE_START)){ 
+						game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer());
+					} else if (joined.size() == 3 && input[0].equals(Protocol.CLIENT_CORE_START)){
+						game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer());
+					} else if (joined.size() == 4 && input[0].equals(Protocol.CLIENT_CORE_START)){
+						game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), joined.get(3).getPlayer());
 						ClientHandler[] clients = new ClientHandler[4];
 						int telInt = 0;
 						for (ClientHandler handle : joined) {

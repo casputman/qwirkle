@@ -192,6 +192,7 @@ public class Client extends Thread {
 
     private void connectToServer() {
         this.sendMessage(Protocol.CLIENT_CORE_JOIN);
+        this.sendMessage(Protocol.CLIENT_CORE_START);
         this.readResponse();
 
         do {
@@ -224,7 +225,7 @@ public class Client extends Thread {
 				} else if (reply.startsWith(Protocol.SERVER_CORE_GAME_ENDED)){
 					game.getBoard().printBoard();
 					//game.getRules().listScores();
-					System.out.println("The ame has ended!");
+					System.out.println("The game has ended!");
 
 				}
 			}
