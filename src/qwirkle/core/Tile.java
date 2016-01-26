@@ -40,6 +40,11 @@ public class Tile {
 	}
 	
 	public String toString() {
-		return this.getColor().name() + " " + this.getShape().name();
+		String toReturn = "";
+		toReturn += this.getColor().name() + " " + this.getShape().name();
+		for(int i = toReturn.length(); i < 14; i++){
+			toReturn += " ";
+		}
+		return toReturn;
 	}
 }

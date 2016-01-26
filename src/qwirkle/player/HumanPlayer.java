@@ -20,6 +20,8 @@ public class HumanPlayer extends Player {
 	public HumanPlayer(String name) {
 		super(name);
 	}
+	
+	private String cantSwap = "empty";
 
 	@Override
 	public Map<String, Tile> determineMove(Game game) {
@@ -37,18 +39,18 @@ public class HumanPlayer extends Player {
 		} catch (IOException e) {
 			System.out.println("shit went down");
 		}
-		String cantSwap = null;
-		if ((input.startsWith("MOVE") && input.length() > 9 && cantSwap == null) ) {
+		if ((input.startsWith("MOVE") && input.length() > 9 && cantSwap.equals("empty")) ) {
 			String coordinates = input.replace("MOVE ", "");
 			String[] coordinatesArray = coordinates.split(Protocol.MESSAGESEPERATOR);
-			System.err.println(coordinatesArray);
 			int xCoordinate = Integer.parseInt(coordinatesArray[0]);
 			int yCoordinate = Integer.parseInt(coordinatesArray[1]);
-			int tileSelection = Integer.parseInt(coordinatesArray[2]);
-			if (tileSelection > 5){
-				tileSelection = 5;
+			int tileSelection = Integer.parseInt(coordinatesArray[2]) - 1;
+			if (tileSelection > getHand().size()){
+				System.err.println("You don't have that many tiles in your inventory");
+				game.getBoard().printBoard();
+				moveMap.putAll(this.determineMove(game));
 			} else {
-				tileSelection = Integer.parseInt(coordinatesArray[2]);
+				tileSelection = Integer.parseInt(coordinatesArray[2]) - 1;
 			}
 			Tile tile = getHand().get(tileSelection);
 			String parsedCoordinates  = Board.makeString(xCoordinate, yCoordinate);
@@ -56,36 +58,38 @@ public class HumanPlayer extends Player {
 				timer.done = true;
 				game.getBoard().makeMove(parsedCoordinates, tile, game);
 				game.current.getHand().remove(tileSelection);
-				this.determineMove(game);
+				game.getBoard().printBoard();
+				moveMap.putAll(this.determineMove(game));
 			} else {
-				System.out.println("Invalid move or already swapped, please try again\n");
-				this.determineMove(game);
+				System.err.println("Invalid move or already swapped, please try again\n");
+				game.getBoard().printBoard();
+				moveMap.putAll(this.determineMove(game));
 			} 
 
-		} if (input.startsWith("SWAP")){
-			ArrayList<Tile> hand = getHand();
-			Bag bag = game.getBag();
-			String tileSwap = input.replace("SWAP ", "");
-			String[] tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
-			int tileSelection = Integer.parseInt(tileArray[0]);
-			Tile tile = getHand().get(tileSelection);
-				if (!(game.getBag().tileBag.containsValue(1)) || !(game.getBag().tileBag.containsValue(2)) || !(game.getBag().tileBag.containsValue(3))  || (!hand.contains(tile))){
-					System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
-					this.determineMove(game);
-				}
-				else {
-					hand.remove(tile);
-					hand.add(game.getBag().drawTile());
-					int amount = bag.tileBag.get(tile);
-					bag.tileBag.put(tile, amount + 1);
-					System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
-					cantSwap = "swapped";
-				} 
-
-		} if (input.startsWith("DONE")){
-			game.nextPlayer();
-		}
-
+			} else if (input.startsWith("SWAP")){
+				ArrayList<Tile> hand = getHand();
+				Bag bag = game.getBag();
+				String tileSwap = input.replace("SWAP ", "");
+				String[] tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
+				int tileSelection = Integer.parseInt(tileArray[0]) - 1;
+				Tile tile = getHand().get(tileSelection);
+					if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
+						System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
+						moveMap.putAll(this.determineMove(game));
+					}
+					else {
+						moveMap.put("SWAP " + moveMap.size(), tile);
+						System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
+						cantSwap = "swapped";
+						moveMap.putAll(this.determineMove(game));
+					} 
+	
+			}  else if (input.startsWith("DONE")){
+				cantSwap = "empty";
+			} else {
+				moveMap.putAll(this.determineMove(game));
+			}
+		Board.clear();
 		return moveMap;
 
 	}

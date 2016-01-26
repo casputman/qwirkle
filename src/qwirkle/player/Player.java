@@ -3,6 +3,7 @@ package qwirkle.player;
 import java.util.ArrayList;
 import java.util.Map;
 
+import qwirkle.core.Board;
 import qwirkle.core.Game;
 import qwirkle.core.Tile;
 
@@ -37,12 +38,16 @@ public abstract class Player {
 			String toReturn = "";
 			for(int i=0; i < hand.size(); i++){
 				int j = i + 1;
-				toReturn += j + ": " + hand.get(i) + " ";
+				toReturn += j + ": " + hand.get(i) + "\n";
 			}
 			return toReturn;
 		}
 		
 	};
+	
+	public void printScore(){
+		System.out.println(Board.EMPTY + Board.EMPTY +"Current Score: " +score);
+	}
 	
 	//Takes a tile from the hand
 	public void takeTile(int tile){

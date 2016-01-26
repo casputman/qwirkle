@@ -18,13 +18,14 @@ public class StupidStrategy implements Strategy {
 		for(String coords: emptyCoords){
 			for(Tile tile : hand){
 				if(game.getRules().isMoveAllowed(coords, tile)){
+					System.err.println("playing");
 					toReturn.put(coords, tile);
-					System.err.println(coords + tile);
 					break;
 				}
 			}
 		}
 		if(toReturn.isEmpty()){
+			System.err.println("swapping");
 			for(Tile tile : hand){
 				toReturn.put(null, tile);
 			}

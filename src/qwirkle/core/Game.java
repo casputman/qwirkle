@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import qwirkle.player.HumanPlayer;
 import qwirkle.player.Player;
 
 public class Game {
@@ -63,12 +64,20 @@ public class Game {
 		running = true;
 		this.nextPlayer();
 		makeMoves(current.determineMove(this));
+		System.err.println(current);
+		if(current.getClass() == HumanPlayer.class){
+			current.printScore();
+		}
 		board.printBoard();
 		
 		if(this.offline){
 			while(!this.getRules().hasWinner() && getRunning()){
 				this.nextPlayer();
 				makeMoves(current.determineMove(this));
+				System.err.println(current);
+				if(current.getClass() == HumanPlayer.class){
+					current.printScore();
+				}
 				board.printBoard();
 			}
 		}
@@ -202,15 +211,21 @@ public class Game {
 	
 	public boolean makeMoves(Map<String, Tile> moves){
 		boolean succes = true;
-		System.err.println(moves.entrySet());
-		if(moves.keySet().contains(null)){
-			for(Tile tile : moves.values()){
-				current.getHand().remove(tile);
-				current.getHand().add(bag.swapTile(tile));
+		Set<String> coords = moves.keySet();
+		boolean swap = false;
+		while(true){
+			for(String coord: coords){
+				if(coord.contains("SWAP")){
+						current.getHand().remove(moves.get(coord));
+						current.getHand().add(bag.swapTile(moves.get(coord)));
+						swap = true;
+					}
+				}
+				
+			if(swap){
+				break;
 			}
-		} else {
 			current.addScore(calculateScore(moves));
-			Set<String> coords = moves.keySet();
 			Board copyBoard = this.getBoard();
 			for(String coord: coords){
 				if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){
@@ -219,7 +234,9 @@ public class Game {
 					board = copyBoard;
 				}
 			}
+			break;
 		}
+		nextPlayer();
 		return succes;
 	}
 	

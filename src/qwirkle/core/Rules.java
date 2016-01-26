@@ -3,6 +3,8 @@ package qwirkle.core;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.sun.swing.internal.plaf.synth.resources.synth_es;
+
 import qwirkle.player.Player;
 
 public class Rules {
@@ -86,15 +88,15 @@ public class Rules {
 		ArrayList<Tile> surrounding = new ArrayList<Tile>();
 		int x = Board.splitString(coords)[0];
 		int y = Board.splitString(coords)[1];
-		for (int i = -1; i < 2; i += 2){
-			x += -1;
+		for (int i = -1; i < 3; i += 3){
+			x += i;
 			if(tiles.containsKey(Board.makeString(x, y)) && !tiles.get(Board.makeString(x, y)).equals(null)){
 				surrounding.add(tiles.get(Board.makeString(x, y)));
 			}
 		}
 		x = Board.splitString(coords)[0];
-		for (int i = -1; i < 2; i += 2){
-			y += -1;
+		for (int i = -1; i < 3; i += 3){
+			y += i;
 			if(tiles.containsKey(Board.makeString(x, y)) && !tiles.get(Board.makeString(x, y)).equals(null)){
 				surrounding.add(tiles.get(Board.makeString(x, y)));
 			}

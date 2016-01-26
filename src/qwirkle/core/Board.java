@@ -10,7 +10,7 @@ import qwirkle.core.Tile.Shape;
 
 public class Board {
 	
-	private static final String EMPTY = "   ";
+	public static final String EMPTY = "               ";
 	
 	private Map<String, Tile> tiles;
 	
@@ -89,18 +89,18 @@ public class Board {
 			toReturn = toReturn + "\n";
 		}
 		toReturn += "    ";
-        for (int x = limits[3]; x <= limits[1]; x++) {
+        for (int x = limits[1]; x <= limits[3]; x++) {
             toReturn += " ";
             if (x >= 0) {
                 toReturn += " ";
             }
             toReturn += x;
-            toReturn += " ";
+            toReturn += "            ";
             if (x > -10 && x < 10) {
                 toReturn += " ";
             }
         }
-		return toReturn;
+		return toReturn + "\n";
 	}
 	
 	public Map<String, Tile> getTiles(){
@@ -143,6 +143,10 @@ public class Board {
 			surroundings.put(coord, surround);
 		}
 		return surroundings;
+	}
+	
+	public static void clear(){
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	}
 		
 }
