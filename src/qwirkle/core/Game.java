@@ -202,14 +202,22 @@ public class Game {
 	
 	public boolean makeMoves(Map<String, Tile> moves){
 		boolean succes = true;
-		current.addScore(calculateScore(moves));
-		Set<String> coords = moves.keySet();
-		Board copyBoard = this.getBoard();
-		for(String coord: coords){
-			if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){
-			} else {
-				succes = false;
-				board = copyBoard;
+		System.err.println(moves.entrySet());
+		if(moves.keySet().contains(null)){
+			for(Tile tile : moves.values()){
+				current.getHand().remove(tile);
+				current.getHand().add(bag.swapTile(tile));
+			}
+		} else {
+			current.addScore(calculateScore(moves));
+			Set<String> coords = moves.keySet();
+			Board copyBoard = this.getBoard();
+			for(String coord: coords){
+				if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){
+				} else {
+					succes = false;
+					board = copyBoard;
+				}
 			}
 		}
 		return succes;
