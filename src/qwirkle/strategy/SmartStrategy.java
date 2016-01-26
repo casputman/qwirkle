@@ -159,9 +159,10 @@ public class SmartStrategy implements Strategy {
 		} else {
 			int[] limits = Board.getLimits(game.getBoard().getTiles());
 			
-			for(int i = limits[2]; i <= limits[0]; i--){
+			for(int i = limits[2]; i >= limits[0]; i--){
 				for(int j = limits[1]; j <= limits[3]; j++){
 					String coords = Board.makeString(j,i);
+					System.err.println(coords);
 					if(!game.getBoard().getTiles().containsKey(coords)){
 						toReturn.add(coords);
 					}
