@@ -37,8 +37,8 @@ public class HumanPlayer extends Player {
 		} catch (IOException e) {
 			System.out.println("shit went down");
 		}
-
-		if ((input.startsWith("MOVE") && input.length() > 9) ) {
+		String cantSwap = null;
+		if ((input.startsWith("MOVE") && input.length() > 9 && cantSwap == null) ) {
 			String coordinates = input.replace("MOVE ", "");
 			String[] coordinatesArray = coordinates.split(Protocol.MESSAGESEPERATOR);
 			System.err.println(coordinatesArray);
@@ -58,7 +58,7 @@ public class HumanPlayer extends Player {
 				game.current.getHand().remove(tileSelection);
 				this.determineMove(game);
 			} else {
-				System.out.println("Invalid move, please try again\n");
+				System.out.println("Invalid move or already swapped, please try again\n");
 				this.determineMove(game);
 			} 
 
@@ -69,18 +69,18 @@ public class HumanPlayer extends Player {
 			String[] tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
 			int tileSelection = Integer.parseInt(tileArray[0]);
 			Tile tile = getHand().get(tileSelection);
-			if (!(game.getBag().tileBag.containsValue(1)) || !(game.getBag().tileBag.containsValue(2)) || !(game.getBag().tileBag.containsValue(3))  || (!hand.contains(tile))){
-				System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
-				this.determineMove(game);
-			}
-			else {
-				hand.remove(tile);
-				hand.add(game.getBag().drawTile());
-				int amount = bag.tileBag.get(tile);
-				bag.tileBag.put(tile, amount + 1);
-				System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
-				this.determineMove(game);
-			} 
+				if (!(game.getBag().tileBag.containsValue(1)) || !(game.getBag().tileBag.containsValue(2)) || !(game.getBag().tileBag.containsValue(3))  || (!hand.contains(tile))){
+					System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
+					this.determineMove(game);
+				}
+				else {
+					hand.remove(tile);
+					hand.add(game.getBag().drawTile());
+					int amount = bag.tileBag.get(tile);
+					bag.tileBag.put(tile, amount + 1);
+					System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
+					cantSwap = "swapped";
+				} 
 
 		} if (input.startsWith("DONE")){
 			game.nextPlayer();
