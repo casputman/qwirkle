@@ -26,10 +26,7 @@ public class StupidStrategy implements Strategy {
 		}
 		if(toReturn.isEmpty()){
 			for(Tile tile : hand){
-				hand.remove(tile);
-				hand.add(game.getBag().drawTile());
-				int amount = game.getBag().tileBag.get(tile);
-				game.getBag().tileBag.put(tile, amount + 1);
+				toReturn.put(null, tile);
 			}
 		}
 		return toReturn;
