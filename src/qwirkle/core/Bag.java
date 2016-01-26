@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import qwirkle.protocol.Protocol;
+
 public class Bag {
 	public int i;
 	
@@ -78,6 +80,12 @@ public class Bag {
 			}
 		}
 		return tiles;
+	}
+	
+	public Tile swapTile(Tile tile){
+		int value = tileBag.get(tile);
+		tileBag.put(tile, value + 1);
+		return this.drawTile();
 	}
 
 }
