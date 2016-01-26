@@ -17,12 +17,36 @@ public class Rules {
 		tiles = board.getTiles();
 	}
 
-	//TODO
 	public boolean hasWinner(){
-		return true;
+		boolean hasWinner = false;
+		if(game.getBag().tileBag.isEmpty()){
+			int players = 0;
+			for(Player player : game.getPlayers()){
+				if(player.getHand().isEmpty()){
+					players++;
+				}
+			}
+			if(players == game.getPlayers().size()){
+				hasWinner = true;
+			}
+		}
+		return hasWinner;
 	}
+	
 	public boolean isWinner(Player player){
-		return true;
+		boolean isWinner = true;
+		if(hasWinner()){
+			for(Player enemy : game.getPlayers()){
+				if(!enemy.equals(player)){
+					if(enemy.score > player.score){
+						isWinner = false;
+					}
+				}
+			}
+		} else {
+			isWinner = false;
+		}
+		return isWinner;
 	}
 	
 	public boolean isMoveAllowed(String coords, Tile tile){
