@@ -7,6 +7,7 @@ import java.util.Set;
 
 import qwirkle.core.Game;
 import qwirkle.core.Tile;
+import qwirkle.protocol.Protocol;
 
 public class StupidStrategy implements Strategy {
 
@@ -21,6 +22,14 @@ public class StupidStrategy implements Strategy {
 					System.err.println(coords + tile);
 					break;
 				}
+			}
+		}
+		if(toReturn.isEmpty()){
+			for(Tile tile : hand){
+				hand.remove(tile);
+				hand.add(game.getBag().drawTile());
+				int amount = game.getBag().tileBag.get(tile);
+				game.getBag().tileBag.put(tile, amount + 1);
 			}
 		}
 		return toReturn;
