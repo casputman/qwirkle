@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.sun.swing.internal.plaf.synth.resources.synth_es;
+
 import qwirkle.core.Game;
 import qwirkle.core.Tile;
 import qwirkle.protocol.Protocol;
@@ -23,16 +25,20 @@ public class StupidStrategy implements Strategy {
 						System.err.println("playing");
 						toReturn.put(coords, tile);
 						foundOne = true;
+						break;
 					}
 				}
-				
+				if(foundOne){
+					break;
+				}
 			}
 			break;
 		}
+		System.err.println(toReturn.entrySet());
 		if(toReturn.isEmpty()){
 			System.err.println("swapping");
 			for(Tile tile : hand){
-				toReturn.put("Swap " + toReturn.size(), tile);
+				toReturn.put("SWAP " + toReturn.size(), tile);
 			}
 		}
 		return toReturn;

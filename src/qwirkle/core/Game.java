@@ -64,17 +64,11 @@ public class Game {
 		running = true;
 		this.nextPlayer();
 		makeMoves(current.determineMove(this));
-		if(current.getClass() == HumanPlayer.class){
-			current.printScore();
-		}
 		board.printBoard();
 		
 		if(this.offline){
 			while(!this.getRules().hasWinner() && getRunning()){
 				makeMoves(current.determineMove(this));
-				if(current.getClass() == HumanPlayer.class){
-					current.printScore();
-				}
 				board.printBoard();
 			}
 		}
@@ -213,27 +207,31 @@ public class Game {
 		while(true){
 			for(String coord: coords){
 				if(coord.contains("SWAP")){
-						current.getHand().remove(moves.get(coord));
-						current.getHand().add(bag.swapTile(moves.get(coord)));
-						swap = true;
-					}
+					System.err.println("getting into swapping");
+					current.getHand().remove(moves.get(coord));
+					current.getHand().add(bag.swapTile(moves.get(coord)));
+					swap = true;
+					System.err.println(swap);
 				}
-				
+			}		
 			if(swap){
 				break;
 			}
+			System.err.println("score: " + calculateScore(moves));
 			current.addScore(calculateScore(moves));
-			Board copyBoard = this.getBoard();
 			for(String coord: coords){
 				if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){
 				} else {
 					succes = false;
-					board = copyBoard;
 				}
 			}
 			break;
 		}
+		Board.clear();
 		nextPlayer();
+		if(current.getClass() == HumanPlayer.class){
+			current.printScore();
+		}
 		return succes;
 	}
 	

@@ -73,23 +73,37 @@ public class HumanPlayer extends Player {
 				String[] tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
 				int tileSelection = Integer.parseInt(tileArray[0]) - 1;
 				Tile tile = getHand().get(tileSelection);
-					if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
-						System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
-						moveMap.putAll(this.determineMove(game));
+				if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
+					System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
+					moveMap.putAll(this.determineMove(game));
+				}
+				else {
+					moveMap.put("SWAP " + moveMap.size(), tile);
+					System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
+					cantSwap = "swapped";
+					while(!input.startsWith("DONE")){
+						hand = getHand();
+						bag = game.getBag();
+						tileSwap = input.replace("SWAP ", "");
+						tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
+						tileSelection = Integer.parseInt(tileArray[0]) - 1;
+						tile = getHand().get(tileSelection);
+							if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
+								System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
+								moveMap.putAll(this.determineMove(game));
+							}
+							else {
+								moveMap.put("SWAP " + moveMap.size(), tile);
+								System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
+								cantSwap = "swapped";
+						}
 					}
-					else {
-						moveMap.put("SWAP " + moveMap.size(), tile);
-						System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
-						cantSwap = "swapped";
-						moveMap.putAll(this.determineMove(game));
-					} 
-	
+				}
 			}  else if (input.startsWith("DONE")){
 				cantSwap = "empty";
 			} else {
 				moveMap.putAll(this.determineMove(game));
 			}
-		Board.clear();
 		return moveMap;
 
 	}
