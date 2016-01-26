@@ -32,7 +32,17 @@ public abstract class Player {
 	
 	//Creates a new Arraylist called hand, 
 	//which automatically gets filled when the hand doesn't contain 6 tiles.
-	private ArrayList<Tile> hand = new ArrayList<Tile>();
+	private ArrayList<Tile> hand = new ArrayList<Tile>(){
+		public String toString(){
+			String toReturn = "";
+			for(int i=0; i < hand.size(); i++){
+				int j = i + 1;
+				toReturn += j + ": " + hand.get(i) + " ";
+			}
+			return toReturn;
+		}
+		
+	};
 	
 	//Takes a tile from the hand
 	public void takeTile(int tile){
