@@ -46,7 +46,7 @@ public class HumanPlayer extends Player {
                 if (game.getRules().isMoveAllowed(parsedCoordinates, tile)) {
                     timer.done = true;
                     game.getBoard().makeMove(parsedCoordinates, tile, game);
-                	getHand().remove(tileSelection);
+                	game.current.getHand().remove(tileSelection);
                 } else {
                     System.out.println("Invalid move, please try again\n");
                     this.determineMove(game);
