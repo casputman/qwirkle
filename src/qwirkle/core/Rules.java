@@ -101,8 +101,14 @@ public class Rules {
 					}
 				} else if(game.getBoard().getTiles().isEmpty()){
 					allowed = true;
+				} else {
+					allowed = false;
 				}
+			} else {
+				allowed = false;
 			}
+		} else {
+			allowed = false;
 		}
 		return allowed;
 	}

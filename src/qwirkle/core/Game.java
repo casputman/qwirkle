@@ -44,6 +44,7 @@ public class Game {
 	}
 
 	public Game(Player one, Player two, Player three){
+		board = new Board();
 		players.add(one);
 		players.add(two);
 		players.add(three);
