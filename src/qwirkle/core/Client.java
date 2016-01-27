@@ -215,7 +215,11 @@ public class Client extends Thread {
 
 	private void connectToServer() {
 		this.sendMessage(Protocol.CLIENT_CORE_JOIN);
-		this.readResponse();
+		try {
+			this.readResponse();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		doSomething();
 		do {
 			String input = getInput("");
@@ -223,7 +227,7 @@ public class Client extends Thread {
 		} while (true);
 	}
 
-	private void readResponse(){
+	private void readResponse() throws InterruptedException{
 		try {
 			String reply = in.readLine();
 
@@ -236,8 +240,24 @@ public class Client extends Thread {
 					System.out.println("This is not a valid move, please try again");
 				} else if (reply.startsWith(Protocol.SERVER_CORE_START)) {
 					System.err.println("THE GAME IS STARTING");
-					sleep(1000);
+					if (antw.length == 5){
+						Player player1 = Player.createPlayer(antw[1]);
+						Player player2 = Player.createPlayer(antw[2]);
+						Player player3 = Player.createPlayer(antw[3]);
+						Player player4 = Player.createPlayer(antw[4]);
+						game = new Game(player1, player2, player3, player4);
+					} else if (antw.length == 4){
+						Player player1 = Player.createPlayer(antw[1]);
+						Player player2 = Player.createPlayer(antw[2]);
+						Player player3 = Player.createPlayer(antw[3]);
+						game = new Game(player1, player2, player3);
+					} else if (antw.length == 3){
+						Player player1 = Player.createPlayer(antw[1]);
+						Player player2 = Player.createPlayer(antw[2]);
+						game = new Game(player1, player2);
+					}
 					game.getBoard().printBoard(); 
+
 				} else if (reply.startsWith(Protocol.SERVER_CORE_MOVE_MADE)){
 					String coords = (antw[1] + Protocol.MESSAGESEPERATOR + antw[2]);
 					Tile tile = game.getBoard().makeTile(Integer.parseInt(antw[3]), Integer.parseInt(antw[4]));
@@ -258,9 +278,6 @@ public class Client extends Thread {
 			doSomething();
 		} catch (IOException e) {
 			System.err.println("Something went wrong at the server, so we lost our connection");
-			menu();
-		} catch (InterruptedException e) {
-			System.out.println("Something went wrong");
 			menu();
 		}
 	}
