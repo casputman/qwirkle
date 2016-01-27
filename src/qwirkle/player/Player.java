@@ -46,7 +46,13 @@ public abstract class Player {
 	};
 	
 	public void printScore(){
-		System.out.println(Board.EMPTY + Board.EMPTY +"Current Score: " +score);
+		String score = "Current Score: " +this.score + "|";
+		String line = "";
+		for (int i = 1; i < score.length(); i++){
+			line += "-";
+		}
+		line += "|";
+		System.out.println(line + "\n" + score + "\n" + line + "\n");
 	}
 	
 	//Takes a tile from the hand

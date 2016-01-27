@@ -70,7 +70,7 @@ public class Rules {
 						if(temp1 == null){
 							one = false;
 						}
-						if(one && !temp1.getShape().equals(tile.getShape()) && !temp1.getColor().equals(tile.getColor())){
+						if(one && ((!temp1.getShape().equals(tile.getShape()) && !temp1.getColor().equals(tile.getColor())) || (temp1.getShape().equals(tile.getShape()) && temp1.getColor().equals(tile.getColor())))){
 							allowed = false;
 							break;
 						}
@@ -78,7 +78,7 @@ public class Rules {
 						if(temp2 == null){
 							two = false;
 						}
-						if(two && !temp2.getShape().equals(tile.getShape()) && !temp2.getColor().equals(tile.getColor())){
+						if(two && ((!temp2.getShape().equals(tile.getShape()) && !temp2.getColor().equals(tile.getColor())) || (temp2.getShape().equals(tile.getShape()) && temp2.getColor().equals(tile.getColor())))){							
 							allowed = false;
 							break;
 						}
@@ -86,7 +86,7 @@ public class Rules {
 						if(temp3 == null){
 							three = false;
 						}
-						if(three && !temp3.getShape().equals(tile.getShape()) && !temp3.getColor().equals(tile.getColor())){
+						if(three && ((!temp3.getShape().equals(tile.getShape()) && !temp3.getColor().equals(tile.getColor())) || (temp3.getShape().equals(tile.getShape()) && temp3.getColor().equals(tile.getColor())))){							
 							allowed = false;
 							break;
 						}
@@ -94,7 +94,7 @@ public class Rules {
 						if(temp4 == null){
 							four = false;
 						}
-						if(four && !temp4.getShape().equals(tile.getShape()) && !temp4.getColor().equals(tile.getColor())){
+						if(four && ((!temp4.getShape().equals(tile.getShape()) && !temp4.getColor().equals(tile.getColor())) || (temp4.getShape().equals(tile.getShape()) && temp4.getColor().equals(tile.getColor())))){							
 							allowed = false;
 							break;
 						}

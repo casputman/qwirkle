@@ -71,11 +71,19 @@ public class Game {
 			while(!this.getRules().hasWinner() && getRunning()){
 				makeMoves(current.determineMove(this));
 				board.printBoard();
+			} 
+			if(this.getRules().hasWinner()){
+				for(Player player : players){
+					if(this.getRules().isWinner(player)){
+						System.out.println(player + " wins!");
+					}
+				}
 			}
 		}
 	}
 	
 	public void stopGame(){
+		System.err.println("Ending game");
 		running = false;
 	}
 	
@@ -156,7 +164,7 @@ public class Game {
 		for(String coord : newCoords){
 			int[]xy = Board.splitString(coord);
 			if(surroundings.get(coord)[0] != 0){
-				for(int i = 1; i < 6; i++){
+					for(int i = 1; i < 6; i++){
 					String temp = Board.makeString(xy[0]+i, xy[1]);
 					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
 						int points = 0;
@@ -176,6 +184,7 @@ public class Game {
 						break;
 					}
 				}
+			}
 			if(surroundings.get(coord)[1] != 0){
 				for(int i = 1; i < 6; i++){
 					String temp = Board.makeString(xy[0], xy[1]+i);
@@ -190,12 +199,11 @@ public class Game {
 								surroundings.put(temp2, takeY);
 							}
 						}
-							if(points == 6){
-								points += 6;
-							}
-							score += points;
-							break;
+						if(points == 6){
+							points += 6;
 						}
+						score += points;
+						break;
 					}
 				}
 			}
