@@ -81,23 +81,23 @@ public class HumanPlayer extends Player {
 				moveMap.put("SWAP " + moveMap.size(), tile);
 				System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
 				while(!input.startsWith("DONE")){
-
-					hand = getHand();
-					bag = game.getBag();
-					tileSwap = input.replace("SWAP ", "");
-					tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
-					tileSelection = Integer.parseInt(tileArray[0]) - 1;
-					tile = getHand().get(tileSelection);
-					if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
-						System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
-						moveMap.putAll(this.determineMove(game));
+					while(input.startsWith("SWAP")){
+						hand = getHand();
+						bag = game.getBag();
+						tileSwap = input.replace("SWAP ", "");
+						tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
+						tileSelection = Integer.parseInt(tileArray[0]) - 1;
+						tile = getHand().get(tileSelection);
+						if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
+							System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
+							moveMap.putAll(this.determineMove(game));
+						}
+						else {
+							moveMap.put("SWAP " + moveMap.size(), tile);
+							System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
+							cantSwap = true;
+						}
 					}
-					else {
-						moveMap.put("SWAP " + moveMap.size(), tile);
-						System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED + "jaja");
-						cantSwap = true;
-					}
-
 				}
 			}
 		}  else if (input.startsWith("DONE")){
