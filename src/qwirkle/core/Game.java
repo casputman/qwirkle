@@ -151,7 +151,7 @@ public class Game {
 		Set<String> newBoardCoords = newBoard.keySet();
 		Set<String> newCoords = moves.keySet();
 		//Now we know which tiles have been put down this turn.
-		Map<String, int[]> surroundings = Board.surrounding(newBoard, newCoords);
+		Map<String, int[]> surroundings = Board.surrounding(newBoard, newBoardCoords);
 		for(String coord : newCoords){
 			int[]xy = Board.splitString(coord);
 			if(surroundings.get(coord)[0] != 0){
@@ -159,9 +159,9 @@ public class Game {
 					String temp = Board.makeString(xy[0]+i, xy[1]);
 					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
 						int points = 0;
-						for(int j = 0; i > -6; i--){
+						for(int j = 0; j > -6; j--){
 							String temp2 = Board.makeString(Board.splitString(temp)[0] + j, Board.splitString(temp)[1]);
-							if(newBoardCoords.contains(temp2) && !newBoard.get(temp2).equals(null)){
+							if(newBoardCoords.contains(temp2) && newBoard.get(temp2) != null){
 								points += 1;
 								int[] takeX = surroundings.get(temp2);
 								takeX[0] = 0;
@@ -179,7 +179,7 @@ public class Game {
 					String temp = Board.makeString(xy[0], xy[1]+i);
 					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
 						int points = 0;
-						for(int j = 0; i > -6; i--){
+						for(int j = 0; j > -6; j--){
 							String temp2 = Board.makeString(Board.splitString(temp)[0], Board.splitString(temp)[1]+j);
 							if(newBoardCoords.contains(temp2) && !newBoard.get(temp2).equals(null)){
 								points += 1;
@@ -207,17 +207,14 @@ public class Game {
 		while(true){
 			for(String coord: coords){
 				if(coord.contains("SWAP")){
-					System.err.println("getting into swapping");
 					current.getHand().remove(moves.get(coord));
 					current.getHand().add(bag.swapTile(moves.get(coord)));
 					swap = true;
-					System.err.println(swap);
 				}
 			}		
 			if(swap){
 				break;
 			}
-			System.err.println("score: " + calculateScore(moves));
 			current.addScore(calculateScore(moves));
 			for(String coord: coords){
 				if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){

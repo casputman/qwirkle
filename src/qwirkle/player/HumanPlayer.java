@@ -81,7 +81,7 @@ public class HumanPlayer extends Player {
 					moveMap.put("SWAP " + moveMap.size(), tile);
 					System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
 					cantSwap = "swapped";
-					while(!input.startsWith("DONE")){
+					/*while(!input.startsWith("DONE")){
 						hand = getHand();
 						bag = game.getBag();
 						tileSwap = input.replace("SWAP ", "");
@@ -97,7 +97,7 @@ public class HumanPlayer extends Player {
 								System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
 								cantSwap = "swapped";
 						}
-					}
+					}*/
 				}
 			}  else if (input.startsWith("DONE")){
 				cantSwap = "empty";
