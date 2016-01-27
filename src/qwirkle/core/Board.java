@@ -31,7 +31,7 @@ public class Board {
 					break;
 				}
 			}
-			if(game.current.getClass() == HumanPlayer.class){
+			if(game.current.getClass().equals(HumanPlayer.class)){
 				game.takeTile(game.current, tileNumber);
 			}
 		} else {
@@ -148,7 +148,7 @@ public class Board {
 	}
 	
 	public static void clear(){
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		System.out.println("\n----------------------------------------------------------------------\n");
 	}
 		
 }

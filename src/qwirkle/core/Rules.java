@@ -64,7 +64,7 @@ public class Rules {
 		if(freeCoords(coords)){
 			if(game.current.getHand().contains(tile)){
 				ArrayList<Tile> surrounding = surrounding(coords);
-				if(!surrounding.isEmpty()){
+				if(!surrounding.isEmpty() && surrounding.get(1) != null){
 					for(int j = 1; j < 6; j++){
 						Tile temp1 = tiles.get(Board.makeString(x+j, y));
 						if(temp1 == null){

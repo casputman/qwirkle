@@ -22,13 +22,13 @@ public abstract class Player {
 	}
 
 	//Sets score to old score + new score
-	public void setScore(int score, int scoreAdd){
-		this.score = score;
-		score = score + scoreAdd;
+	public void setScore(int oldScore, int scoreAdd){
+		score = oldScore + scoreAdd;
 	}
 	
 	public void addScore(int scoreAdd){
 		setScore(score, scoreAdd);
+		
 	}
 	
 	//Creates a new Arraylist called hand, 

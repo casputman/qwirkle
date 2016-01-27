@@ -59,6 +59,7 @@ public class HumanPlayer extends Player {
 				game.getBoard().makeMove(parsedCoordinates, tile, game);
 				game.current.getHand().remove(tileSelection);
 				game.getBoard().printBoard();
+				Board.clear();
 				moveMap.put(parsedCoordinates, tile);
 				moveMap.putAll(this.determineMove(game));
 			} else {
@@ -102,6 +103,8 @@ public class HumanPlayer extends Player {
 				}
 			}  else if (input.startsWith("DONE")){
 				cantSwap = "empty";
+			} else if (input.startsWith("STOP")){
+				game.stopGame();
 			} else {
 				moveMap.putAll(this.determineMove(game));
 			}
