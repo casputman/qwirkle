@@ -44,6 +44,7 @@ public class Game {
 	}
 
 	public Game(Player one, Player two, Player three){
+		board = new Board();
 		players.add(one);
 		players.add(two);
 		players.add(three);
@@ -70,11 +71,19 @@ public class Game {
 			while(!this.getRules().hasWinner() && getRunning()){
 				makeMoves(current.determineMove(this));
 				board.printBoard();
+			} 
+			if(this.getRules().hasWinner()){
+				for(Player player : players){
+					if(this.getRules().isWinner(player)){
+						System.out.println(player + " wins!");
+					}
+				}
 			}
 		}
 	}
 	
 	public void stopGame(){
+		System.err.println("Ending game");
 		running = false;
 	}
 	
@@ -155,13 +164,13 @@ public class Game {
 		for(String coord : newCoords){
 			int[]xy = Board.splitString(coord);
 			if(surroundings.get(coord)[0] != 0){
-				for(int i = 1; i < 6; i++){
+					for(int i = 1; i < 6; i++){
 					String temp = Board.makeString(xy[0]+i, xy[1]);
 					if(!newBoardCoords.contains(temp) || newBoard.get(temp).equals(null)){
 						int points = 0;
 						for(int j = 0; j > -6; j--){
 							String temp2 = Board.makeString(Board.splitString(temp)[0] + j, Board.splitString(temp)[1]);
-							if(newBoardCoords.contains(temp2) && newBoard.get(temp2) != null){
+							if(newBoardCoords.contains(temp2) && newBoard.get(temp2) != null && surroundings.get(temp2)[0] != 0){
 								points += 1;
 								int[] takeX = surroundings.get(temp2);
 								takeX[0] = 0;
@@ -172,8 +181,10 @@ public class Game {
 							points += 6;
 						}
 						score += points;
+						break;
 					}
 				}
+			}
 			if(surroundings.get(coord)[1] != 0){
 				for(int i = 1; i < 6; i++){
 					String temp = Board.makeString(xy[0], xy[1]+i);
@@ -181,18 +192,18 @@ public class Game {
 						int points = 0;
 						for(int j = 0; j > -6; j--){
 							String temp2 = Board.makeString(Board.splitString(temp)[0], Board.splitString(temp)[1]+j);
-							if(newBoardCoords.contains(temp2) && !newBoard.get(temp2).equals(null)){
+							if(newBoardCoords.contains(temp2) && newBoard.get(temp2) !=null && surroundings.get(temp2)[1] != 0){
 								points += 1;
-								int[] takeX = surroundings.get(temp2);
-								takeX[0] = 0;
-								surroundings.put(temp2, takeX);
+								int[] takeY = surroundings.get(temp2);
+								takeY[1] = 0;
+								surroundings.put(temp2, takeY);
 							}
 						}
-							if(points == 6){
-								points += 6;
-							}
-							score += points;
+						if(points == 6){
+							points += 6;
 						}
+						score += points;
+						break;
 					}
 				}
 			}
@@ -215,7 +226,8 @@ public class Game {
 			if(swap){
 				break;
 			}
-			current.addScore(calculateScore(moves));
+			int score = calculateScore(moves);
+			current.addScore(score);
 			for(String coord: coords){
 				if(takeTurn(Board.splitString(coord)[0], Board.splitString(coord)[1], moves.get(coord))){
 				} else {

@@ -7,6 +7,7 @@ import java.util.Set;
 import qwirkle.core.Tile;
 import qwirkle.core.Tile.Color;
 import qwirkle.core.Tile.Shape;
+import qwirkle.player.HumanPlayer;
 
 public class Board {
 	
@@ -20,7 +21,7 @@ public class Board {
 	}
 	
 	public boolean makeMove(String coords, Tile tile, Game game){
-		boolean moveMade;
+		boolean moveMade = true;
 		if(game.getRules().isMoveAllowed(coords, tile)){
 			tiles.put(coords, tile);
 			int tileNumber = 0;
@@ -30,8 +31,9 @@ public class Board {
 					break;
 				}
 			}
-			game.takeTile(game.current, tileNumber);
-			moveMade = true;
+			if(game.current.getClass().equals(HumanPlayer.class)){
+				game.takeTile(game.current, tileNumber);
+			}
 		} else {
 			moveMade = false;
 		}
@@ -146,7 +148,7 @@ public class Board {
 	}
 	
 	public static void clear(){
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		System.out.println("\n----------------------------------------------------------------------\n");
 	}
 		
 }

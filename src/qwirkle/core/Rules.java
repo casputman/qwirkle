@@ -52,30 +52,63 @@ public class Rules {
 	}
 	
 	public boolean isMoveAllowed(String coords, Tile tile){
-		boolean allowed = false;
+		boolean allowed = true;
 		int[] coord = Board.splitString(coords);
 		int x = coord[0];
 		int y = coord[1];
+		Map<String, Tile> tiles = game.getBoard().getTiles();
+		boolean one = true;
+		boolean two = true;
+		boolean three = true;
+		boolean four = true;
 		if(freeCoords(coords)){
 			if(game.current.getHand().contains(tile)){
 				ArrayList<Tile> surrounding = surrounding(coords);
 				if(!surrounding.isEmpty()){
-					int valid = 0;
-					for(int i = 0; i < surrounding.size(); i++){
-						Tile temp = surrounding.get(i);
-						if(!temp.equals(tile)){
-							if(temp.getShape().equals(tile.getShape()) || temp.getColor().equals(tile.getColor())){
-								valid += 1;
-							}
+					for(int j = 1; j < 6; j++){
+						Tile temp1 = tiles.get(Board.makeString(x+j, y));
+						if(temp1 == null){
+							one = false;
 						}
-					}
-					if(valid == surrounding.size()){
-						allowed = true;
+						if(one && ((!temp1.getShape().equals(tile.getShape()) && !temp1.getColor().equals(tile.getColor())) || (temp1.getShape().equals(tile.getShape()) && temp1.getColor().equals(tile.getColor())))){
+							allowed = false;
+							break;
+						}
+						Tile temp2 = tiles.get(Board.makeString(x-j, y));
+						if(temp2 == null){
+							two = false;
+						}
+						if(two && ((!temp2.getShape().equals(tile.getShape()) && !temp2.getColor().equals(tile.getColor())) || (temp2.getShape().equals(tile.getShape()) && temp2.getColor().equals(tile.getColor())))){							
+							allowed = false;
+							break;
+						}
+						Tile temp3 = tiles.get(Board.makeString(x, y+j));
+						if(temp3 == null){
+							three = false;
+						}
+						if(three && ((!temp3.getShape().equals(tile.getShape()) && !temp3.getColor().equals(tile.getColor())) || (temp3.getShape().equals(tile.getShape()) && temp3.getColor().equals(tile.getColor())))){							
+							allowed = false;
+							break;
+						}
+						Tile temp4 = tiles.get(Board.makeString(x, y-j));
+						if(temp4 == null){
+							four = false;
+						}
+						if(four && ((!temp4.getShape().equals(tile.getShape()) && !temp4.getColor().equals(tile.getColor())) || (temp4.getShape().equals(tile.getShape()) && temp4.getColor().equals(tile.getColor())))){							
+							allowed = false;
+							break;
+						}
 					}
 				} else if(game.getBoard().getTiles().isEmpty()){
 					allowed = true;
+				} else {
+					allowed = false;
 				}
+			} else {
+				allowed = false;
 			}
+		} else {
+			allowed = false;
 		}
 		return allowed;
 	}

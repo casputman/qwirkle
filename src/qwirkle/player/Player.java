@@ -22,13 +22,13 @@ public abstract class Player {
 	}
 
 	//Sets score to old score + new score
-	public void setScore(int score, int scoreAdd){
-		this.score = score;
-		score = score + scoreAdd;
+	public void setScore(int oldScore, int scoreAdd){
+		score = oldScore + scoreAdd;
 	}
 	
 	public void addScore(int scoreAdd){
 		setScore(score, scoreAdd);
+		
 	}
 	
 	//Creates a new Arraylist called hand, 
@@ -46,7 +46,13 @@ public abstract class Player {
 	};
 	
 	public void printScore(){
-		System.out.println(Board.EMPTY + Board.EMPTY +"Current Score: " +score);
+		String score = "Current Score: " +this.score + "|";
+		String line = "";
+		for (int i = 1; i < score.length(); i++){
+			line += "-";
+		}
+		line += "|";
+		System.out.println(line + "\n" + score + "\n" + line + "\n");
 	}
 	
 	//Takes a tile from the hand
