@@ -131,19 +131,24 @@ public class Server {
 		} else if (input[0].equals(Protocol.CLIENT_CORE_START)){
 			Game game = null;
 			ClientHandler[] clients = null;
+			if (joined.size() == 1){
+				sendMessage(handler, "I pity the fool who starts with only 1 player!");
+			}
 			if (joined.size() == 2){ 
 				game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer());
 			} else if (joined.size() == 3){
 				game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer());
 			} else if (joined.size() == 4){
 				game = new Game(joined.get(0).getPlayer(), joined.get(1).getPlayer(), joined.get(2).getPlayer(), joined.get(3).getPlayer());
-				clients = new ClientHandler[4];
-				int telInt = 0;
-				for (ClientHandler handle : joined) {
-					clients[telInt] = handle;
-					telInt++;
+			}
+			clients = new ClientHandler[joined.size()];
+			System.out.println(joined.size());
+			for (ClientHandler handle : joined) {
+				for (int i = 0; i < joined.size(); i++){
+					clients[i] = handle;
 				}
 			}
+
 			ClientHandler firstPlayer;
 			firstPlayer = joined.get(0);
 			gameMap.put(game, clients);
@@ -412,6 +417,7 @@ public class Server {
 		ClientHandler[] handlers = gameMap.get(handler.getGame());
 		ClientHandler toReturn = null;
 		int player = 0;
+
 		if(handlers[player].equals(handler) || !handler.equals(null)){
 			player += 1;
 			player %= 4;
