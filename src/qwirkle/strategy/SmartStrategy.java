@@ -160,7 +160,7 @@ public class SmartStrategy implements Strategy {
 			int[] limits = Board.getLimits(game.getBoard().getTiles());
 			
 			for(int i = limits[2]+1; i >= limits[0]-1; i--){
-				for(int j = limits[1]+1; j <= limits[3]-1; j++){
+				for(int j = limits[3]+1; j >= limits[1]-1; j--){
 					String coords = Board.makeString(j,i);
 					if(!game.getBoard().getTiles().containsKey(coords)){
 						toReturn.add(coords);

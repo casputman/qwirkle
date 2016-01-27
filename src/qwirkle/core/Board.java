@@ -102,7 +102,7 @@ public class Board {
                 toReturn += " ";
             }
         }
-		return toReturn + "\n";
+		return toReturn + "\n-------------------------------------------------------\n";
 	}
 	
 	public Map<String, Tile> getTiles(){

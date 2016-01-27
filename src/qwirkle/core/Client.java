@@ -96,14 +96,30 @@ public class Client extends Thread {
 	}
 
 	private void makePlayer() {
-		String input = "";
+		/*String input = "";
 		input = getInput("Please enter your name: ");
 		if(input.contains(" ")){
 			System.err.println("Your name can not have a space in it");
 			makePlayer();
 		} else {
 			you = new HumanPlayer(input);
+		}*/
+		String playerType = getInput("\nIs this player a human or computer player?"
+				+ "\nPlease input either 'human' or 'computer'");
+		if (playerType.equalsIgnoreCase("human")){
+			String input = getInput("Please enter your name: ");
+			if(input.contains(" ")){
+				System.err.println("Your name can not have a space in it");
+				makePlayer();
+			} else {
+				you = new HumanPlayer(input);
+			}
+		} else if (playerType.equalsIgnoreCase("computer")){
+			you = new ComputerPlayer("RandomComputerName");
+		} else {
+			initializeClient();
 		}
+		clientName = you.getName();
 
 	}
 	public void assignPlayer(){
