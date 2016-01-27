@@ -59,6 +59,7 @@ public class HumanPlayer extends Player {
 				game.getBoard().makeMove(parsedCoordinates, tile, game);
 				game.current.getHand().remove(tileSelection);
 				game.getBoard().printBoard();
+				moveMap.put(parsedCoordinates, tile);
 				moveMap.putAll(this.determineMove(game));
 			} else {
 				System.err.println("Invalid move or already swapped, please try again\n");
