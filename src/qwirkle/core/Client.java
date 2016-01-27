@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Client extends Thread {
 
@@ -59,10 +60,10 @@ public class Client extends Thread {
 
 	public String nameGenerator(){
 		long millis = System.currentTimeMillis() % 1000;
-        String clientName = ("computerPlayer" +(millis));
-        return clientName;
+		String clientName = ("computerPlayer" +(millis));
+		return clientName;
 	}
-	
+
 	public void numberOfPlayers(){
 		String input = "";
 		input = getInput("How many opponents do you want to play against?");
@@ -82,7 +83,7 @@ public class Client extends Thread {
 			game = new Game(you, player2, player3, player4);
 		}
 	}
-	
+
 	private void startup(){
 		if (isOnline()){
 			initializeClient();
@@ -93,7 +94,7 @@ public class Client extends Thread {
 			game.run();
 		}
 	}
-	
+
 	private void makePlayer() {
 		String input = "";
 		input = getInput("Please enter your name: ");
@@ -103,7 +104,7 @@ public class Client extends Thread {
 		} else {
 			you = new HumanPlayer(input);
 		}
-		
+
 	}
 	public void assignPlayer(){
 		System.out.println("Player2: ");
@@ -190,23 +191,31 @@ public class Client extends Thread {
 		connectToServer();
 	}
 
-    private void connectToServer() {
-        this.sendMessage(Protocol.CLIENT_CORE_JOIN);
-        this.readResponse();
+	private void doSomething(){
+		String input2;
+		input2 = getInput("What do you want to do now?");
+		this.sendMessage(input2);
+	}
 
-        do {
-            String input = getInput("");
-            this.sendMessage(input);
-        } while (true);
-    }
-    
+	private void connectToServer() {
+		this.sendMessage(Protocol.CLIENT_CORE_JOIN);
+		this.readResponse();
+		doSomething();
+		do {
+			String input = getInput("");
+			this.sendMessage(input);
+		} while (true);
+	}
+
 	private void readResponse(){
 		try {
 			String reply = in.readLine();
+
 			while (reply != null){
 				String[] antw = reply.split(Protocol.MESSAGESEPERATOR);
 				if (reply.startsWith(Protocol.SERVER_CORE_JOIN_ACCEPTED)){
 					System.out.println("You have succesfully joined the server");
+					doSomething();
 				} else if (antw[1].equals(Protocol.SERVER_CORE_MOVE_DENIED)) {
 					System.out.println("This is not a valid move, please try again");
 				} else if (reply.startsWith(Protocol.SERVER_CORE_START)) {
@@ -224,11 +233,13 @@ public class Client extends Thread {
 				} else if (reply.startsWith(Protocol.SERVER_CORE_GAME_ENDED)){
 					game.getBoard().printBoard();
 					//game.getRules().listScores();
-					System.out.println("The ame has ended!");
+					System.out.println("The game has ended!");
 
 				}
+				reply = in.readLine();
 			}
 			readResponse();
+			doSomething();
 		} catch (IOException e) {
 			System.err.println("Something went wrong at the server, so we lost our connection");
 			menu();
@@ -320,6 +331,9 @@ public class Client extends Thread {
 		}
 		if (input.equalsIgnoreCase("exit")) {
 			shutdown();
+		}
+		if (input.equalsIgnoreCase("start")){
+			this.sendMessage(input);
 		}
 		return input;
 
