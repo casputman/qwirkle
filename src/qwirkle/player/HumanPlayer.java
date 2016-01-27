@@ -20,8 +20,8 @@ public class HumanPlayer extends Player {
 	public HumanPlayer(String name) {
 		super(name);
 	}
-
-	private boolean cantSwap = false;
+	
+	private String cantSwap = "empty";
 
 	@Override
 	public Map<String, Tile> determineMove(Game game) {
@@ -32,16 +32,16 @@ public class HumanPlayer extends Player {
 		System.out.println(this.name + ", please make your move (x -space- y -space- tile) ");
 		System.out.println(getHand());
 		String input = "";
+
 		try {
 			input = new BufferedReader(new InputStreamReader(System.in)).readLine().trim()
 					.toUpperCase();
 		} catch (IOException e) {
 			System.out.println("shit went down");
 		}
-		if ((input.startsWith("MOVE") && input.length() > 9 && cantSwap == false) ) {
+		if ((input.startsWith("MOVE") && input.length() > 9 && cantSwap.equals("empty")) ) {
 			String coordinates = input.replace("MOVE ", "");
 			String[] coordinatesArray = coordinates.split(Protocol.MESSAGESEPERATOR);
-
 			int xCoordinate = Integer.parseInt(coordinatesArray[0]);
 			int yCoordinate = Integer.parseInt(coordinatesArray[1]);
 			int tileSelection = Integer.parseInt(coordinatesArray[2]) - 1;
@@ -66,49 +66,44 @@ public class HumanPlayer extends Player {
 				moveMap.putAll(this.determineMove(game));
 			} 
 
-		} else if (input.startsWith("SWAP")){
-			ArrayList<Tile> hand = getHand();
-			Bag bag = game.getBag();
-			String tileSwap = input.replace("SWAP ", "");
-			String[] tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
-			int tileSelection = Integer.parseInt(tileArray[0]) - 1;
-			Tile tile = getHand().get(tileSelection);
-			if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
-				System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
-				moveMap.putAll(this.determineMove(game));
-			}
-			else {
-				moveMap.put("SWAP " + moveMap.size(), tile);
-				System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
-				while(!input.startsWith("DONE")){
-					while(input.startsWith("SWAP")){
+			} else if (input.startsWith("SWAP")){
+				ArrayList<Tile> hand = getHand();
+				Bag bag = game.getBag();
+				String tileSwap = input.replace("SWAP ", "");
+				String[] tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
+				int tileSelection = Integer.parseInt(tileArray[0]) - 1;
+				Tile tile = getHand().get(tileSelection);
+				if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
+					System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
+					moveMap.putAll(this.determineMove(game));
+				}
+				else {
+					moveMap.put("SWAP " + moveMap.size(), tile);
+					System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
+					cantSwap = "swapped";
+					while(!input.startsWith("DONE")){
 						hand = getHand();
 						bag = game.getBag();
 						tileSwap = input.replace("SWAP ", "");
 						tileArray = tileSwap.split(Protocol.MESSAGESEPERATOR);
 						tileSelection = Integer.parseInt(tileArray[0]) - 1;
 						tile = getHand().get(tileSelection);
-						if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
-							System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
-							moveMap.putAll(this.determineMove(game));
-						}
-						else {
-							moveMap.put("SWAP " + moveMap.size(), tile);
-							System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
-							cantSwap = true;
+							if (!bag.tileBag.containsValue(1) && !bag.tileBag.containsValue(2) && !bag.tileBag.containsValue(3)  || (!hand.contains(tile))){
+								System.out.println(Protocol.SERVER_CORE_SWAP_DENIED);
+								moveMap.putAll(this.determineMove(game));
+							}
+							else {
+								moveMap.put("SWAP " + moveMap.size(), tile);
+								System.out.println(Protocol.SERVER_CORE_SWAP_ACCEPTED);
+								cantSwap = "swapped";
 						}
 					}
 				}
+			}  else if (input.startsWith("DONE")){
+				cantSwap = "empty";
+			} else {
+				moveMap.putAll(this.determineMove(game));
 			}
-		}  else if (input.startsWith("DONE")){
-			cantSwap = false;
-			System.out.println(game.current);
-			game.nextPlayer();
-			System.out.println(game.current);
-			game.makeMoves(game.current.determineMove(game));
-		} else {
-			moveMap.putAll(this.determineMove(game));
-		}
 		return moveMap;
 
 	}
