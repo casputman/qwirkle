@@ -55,7 +55,7 @@ public class Server {
 			}
 			try {
 				System.err.println("          STARTING SERVER WITH IP: " + InetAddress.getLocalHost()
-				+ "\n               AND PORT: " + port + "\n");
+						+ "\n               AND PORT: " + port + "\n");
 			} catch (UnknownHostException e) {
 				System.err.println("ERROR: couldn't figure out and display the ip, " + "please try again");
 				new Server();
@@ -102,6 +102,7 @@ public class Server {
 	Player player2 = null;
 	Player player3 = null;
 	Player player4 = null;
+
 	// @ requires !threads.isEmpty() || !joined.isEmpty() || !playing.isEmpty();
 	public synchronized void analyzeString(ClientHandler handler, String msg) {
 		System.err.println("\nINPUT FROM " + handler.getClientName() + ": " + msg);
@@ -110,19 +111,19 @@ public class Server {
 			threads.remove(handler);
 			if (joined.size() < 4) {
 				joined.add(handler);
-				if (playerAmount == 0){
+				if (playerAmount == 0) {
 					player1 = Player.createPlayer(handler.getClientName());
 					handler.setPlayer(player1);
 					playerAmount++;
-				} else if (playerAmount == 1){
+				} else if (playerAmount == 1) {
 					player2 = Player.createPlayer(handler.getClientName());
 					handler.setPlayer(player2);
 					playerAmount++;
-				} else if (playerAmount == 2){
+				} else if (playerAmount == 2) {
 					player3 = Player.createPlayer(handler.getClientName());
 					handler.setPlayer(player3);
 					playerAmount++;
-				} else if (playerAmount == 3){
+				} else if (playerAmount == 3) {
 					player4 = Player.createPlayer(handler.getClientName());
 					handler.setPlayer(player4);
 					playerAmount = 0;
@@ -131,14 +132,16 @@ public class Server {
 				sendMessage(handler, "Waiting for game to start.");
 				System.out.println("JOINING: " + handler.getClientName() + " is waiting for a game!");
 			}
-			/*} else if (!joined.get(0).getClientName().equals(handler.getClientName())) {
-				joined.add(handler);
-				Player two = Player.createPlayer(handler.getClientName());
-				handler.setPlayer(two);
-				acceptRequest(handler);
-				sendMessage(handler, Protocol.SERVER_CORE_JOIN_ACCEPTED);
-				System.out.println("JOINING: " + handler.getClientName() + " is waiting for a game.");
-			}*/
+			/*
+			 * } else if
+			 * (!joined.get(0).getClientName().equals(handler.getClientName()))
+			 * { joined.add(handler); Player two =
+			 * Player.createPlayer(handler.getClientName());
+			 * handler.setPlayer(two); acceptRequest(handler);
+			 * sendMessage(handler, Protocol.SERVER_CORE_JOIN_ACCEPTED);
+			 * System.out.println("JOINING: " + handler.getClientName() +
+			 * " is waiting for a game."); }
+			 */
 		} else if (input[0].equals(Protocol.CLIENT_CORE_START)) {
 			Game game = null;
 			ClientHandler[] clients = null;
@@ -150,8 +153,7 @@ public class Server {
 			} else if (joined.size() == 3) {
 				game = new Game(player1, player2, player3);
 			} else if (joined.size() == 4) {
-				game = new Game(player1, player2, player3,
-						player4);
+				game = new Game(player1, player2, player3, player4);
 			}
 			clients = new ClientHandler[joined.size()];
 			for (ClientHandler handle : joined) {
@@ -159,14 +161,14 @@ public class Server {
 					clients[i] = handle;
 				}
 			}
-			
+
 			gameMap.put(game, clients);
 			for (ClientHandler handle : joined) {
 				System.out.println(handle);
 				handle.setGame(game);
-				for (int i = 0; i < clients.length; i++){
+				for (int i = 0; i < clients.length; i++) {
 					sendMessage(clients[i], Protocol.SERVER_CORE_START + Protocol.MESSAGESEPERATOR + player1.getName()
-					+ Protocol.MESSAGESEPERATOR + player2.getName());
+							+ Protocol.MESSAGESEPERATOR + player2.getName());
 					playing.add(handle);
 				}
 			}
@@ -206,7 +208,6 @@ public class Server {
 			removeHandler(handler);
 		}
 	}
-
 
 	/**
 	 * send ProtocolControl.acceptRequest to the handler
@@ -318,15 +319,15 @@ public class Server {
 				for (ClientHandler client : clients) {
 					if (game.getRules().isWinner(client.getPlayer())) {
 						sendMessage(client, Protocol.SERVER_CORE_GAME_ENDED + Protocol.MESSAGESEPERATOR
-								+ client.getClientName() + Protocol.MESSAGESEPERATOR + ProtocolConstants.winner);
+								+ client.getClientName() + Protocol.MESSAGESEPERATOR + "WINNER");
 						sendMessage(handler(client), Protocol.SERVER_CORE_GAME_ENDED + Protocol.MESSAGESEPERATOR
-								+ client.getClientName() + Protocol.MESSAGESEPERATOR + ProtocolConstants.winner);
+								+ client.getClientName() + Protocol.MESSAGESEPERATOR + "WINNER");
 					}
 				}
 			} else {
 				for (ClientHandler client : clients) {
 					sendMessage(client, Protocol.SERVER_CORE_GAME_ENDED + Protocol.MESSAGESEPERATOR
-							+ client.getClientName() + Protocol.MESSAGESEPERATOR + ProtocolConstants.draw);
+							+ client.getClientName() + Protocol.MESSAGESEPERATOR + "DRAW");
 				}
 			}
 		}

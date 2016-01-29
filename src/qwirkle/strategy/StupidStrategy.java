@@ -18,23 +18,23 @@ public class StupidStrategy implements Strategy {
 		Map<String, Tile> toReturn = new HashMap<String, Tile>();
 		Set<String> emptyCoords = SmartStrategy.emptyCoords(game);
 		boolean foundOne = false;
-		while(!foundOne){
-			for(String coords: emptyCoords){
-				for(Tile tile : hand){
-					if(game.getRules().isMoveAllowed(coords, tile)){
+		while (!foundOne) {
+			for (String coords : emptyCoords) {
+				for (Tile tile : hand) {
+					if (game.getRules().isMoveAllowed(coords, tile)) {
 						toReturn.put(coords, tile);
 						foundOne = true;
 						break;
 					}
 				}
-				if(foundOne){
+				if (foundOne) {
 					break;
 				}
 			}
 			break;
 		}
-		if(toReturn.isEmpty()){
-			for(Tile tile : hand){
+		if (toReturn.isEmpty()) {
+			for (Tile tile : hand) {
 				toReturn.put("SWAP " + toReturn.size(), tile);
 			}
 		}
